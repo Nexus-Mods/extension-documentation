@@ -1,4 +1,4 @@
-// Used when generating the embedding link to use within the tutorial modal window.
+// Used when generating the embedding link to use within the tutorial popover window.
 const YOUTUBE_LINK = "https://www.youtube.com/embed/";
 
 // Regex pattern used to test string timestamps and convert them to numbers.

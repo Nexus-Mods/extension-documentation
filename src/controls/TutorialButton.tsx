@@ -34,10 +34,9 @@ export interface IComponentState {
 }
 
 /**
- * Component to make additional information available to the user without taking much
- * space. The user only sees a clickable question mark. On click it will show a popover
- * with the info.
- *
+ * Component will appear as a video icon which users can click and view
+ *  tutorial videos relevant to the section they're on.
+ * 
  * double-linebreaks can be used in the text to start a new paragraph.
  *
  * @param {IProps} props
