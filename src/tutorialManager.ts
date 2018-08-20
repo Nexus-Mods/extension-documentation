@@ -1,8 +1,32 @@
+import IYoutubeInfo, { createTutorialVideo } from "./types/YoutubeInfo";
+
 // Used when generating the embedding link to use within the tutorial popover window.
 const YOUTUBE_LINK = "https://www.youtube.com/embed/";
 
 // Regex pattern used to test string timestamps and convert them to numbers.
 const regexPattern: RegExp = /^([0-5][0-9]|[0-9])(:|\.)[0-5][0-9]$/;
+
+const VIDEO_IDS = [
+  "sD9xKao_u30",
+  "OrZM9LSuDhU",
+  "dWcHiamHhCA",
+  "BQj8I5g4Qm4",
+];
+
+const TUTORIAL_DATA: Array<IYoutubeInfo> = [
+  createTutorialVideo( VIDEO_IDS[0], 'Login Tutorial', '2.05', '2.55' ),
+  createTutorialVideo( VIDEO_IDS[0], 'Test Tutorial', '2.56', '3.32' ),
+  createTutorialVideo( VIDEO_IDS[1], 'Test Tutorial2', '2.56', '3.32' ),
+  createTutorialVideo( VIDEO_IDS[2], 'Test Tutorial3', '2.56', '3.32' ),
+];
+
+export function getTutorialData(id?: number) : IYoutubeInfo|Array<IYoutubeInfo> {
+  if (id) {
+    return TUTORIAL_DATA.find( x => x.id === id );
+  } else {
+    return TUTORIAL_DATA;
+  }
+}
 
 function getEmbedLink(id: string, start: string|number, end: string|number): string {
   let srcLink = YOUTUBE_LINK;

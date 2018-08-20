@@ -22,6 +22,8 @@ export class ThemeToCSS {
     border-right-color: ${variables['border-color']} !important;
     border-left-color: ${variables['border-color']} !important; }
 
+    svg .theme-primary: { fill: #da8e35 }
+
     footer { pointer-events: none; }
 
     footer a { color: ${variables['text-color']} !important }`;

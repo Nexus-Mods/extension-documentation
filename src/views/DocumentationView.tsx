@@ -71,7 +71,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
               disabled={historyIdx === history.length - 1}
               tooltip={t('Forward')}
             />
-            <TutorialButton id='tutorial-login' ytId='sD9xKao_u30' start='2.05' end='2.55' name={t('Login tutorial')} />
+            {/* <TutorialButton id='tutorial-login' ytId='sD9xKao_u30' start='2.05' end='2.55' name={t('Login tutorial')} />
             <TutorialButton id='tutorial-dashboard' ytId='sD9xKao_u30' start='2.56' end='3.32' name={t('Dasboard introduction')} />
             <TutorialButton id='tutorial-multiuser' ytId='sD9xKao_u30' start='3.33' end='4.41' name={t('Multi User Mode')} />
             <TutorialButton id='tutorial-managemods' ytId='sD9xKao_u30' start='4.42' end='8.15' name={t('Mod management')} />
@@ -93,7 +93,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
             <TutorialButton id='tutorial-masterfiles' ytId='BQj8I5g4Qm4' start='3.36' end='6.36' name={t('Master files')} />
             <TutorialButton id='tutorial-loadorder-overview' ytId='BQj8I5g4Qm4' start='6.36' end='9.02' name={t('Load order overview')} />
             <TutorialButton id='tutorial-loadorder-priority' ytId='BQj8I5g4Qm4' start='9.52' end='14.20' name={t('Global priority')} />
-            <TutorialButton id='tutorial-loadorder-dependencies' ytId='BQj8I5g4Qm4' start='14.20' end='20.00' name={t('Reviewing/Setting dependencies')} />
+            <TutorialButton id='tutorial-loadorder-dependencies' ytId='BQj8I5g4Qm4' start='14.20' end='20.00' name={t('Reviewing/Setting dependencies')} /> */}
 
           </div>
 

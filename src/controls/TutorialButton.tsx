@@ -8,26 +8,20 @@ import { Popover } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import getEmbedLink from '../tutorialManager'
+import { IYoutubeInfo } from '../types/YoutubeInfo';
 
 const VIDEO_WIDTH = 560;
 const VIDEO_HEIGHT = 315;
 
-export interface IProps {
-  // The youtube id of the video we want to embed.
-  ytId: string;
-
-  // The start and end times of the video slice we want to display
-  //  We're expecting a string in the "MM:SS, M:SS, M.SS, MM.SS" format.
-  //  OR a number in seconds.
-  start: string | number;
-  end: string | number;
-
+export interface IBaseProps {
   id: string;
   name: string;
   children?: string;
   container?: Element;
   orientation?: 'vertical' | 'horizontal';
 }
+
+type IProps = IBaseProps & IYoutubeInfo
 
 export interface IComponentState {
   open: boolean;
@@ -75,8 +69,7 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
           onHide={this.hide}
           //orientation={orientation}
           target={this.getRef}
-          getBounds={this.getBounds}
-        >
+          getBounds={this.getBounds}>
           {popover}
         </MyOverlay>
         <div className='tutorial-link' ref={this.setRef}>
