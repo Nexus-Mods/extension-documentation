@@ -48,12 +48,12 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
   }
 
   public render(): JSX.Element {
-    const { children, id, ytId, name, start, end, t } = this.props;
+    const { children, id, ytId, name, start, end, t, group } = this.props;
     const { open } = this.state;
 
     let pCounter = 0;
     const popover = (
-      <Popover id={`popover-${id}`} className='tutorial-popover' title={name} style={{ maxWidth: '100%' }}>
+      <Popover id={`popover-${id}`} className='tutorial-popover' title={t(name)} style={{ maxWidth: '100%' }}>
         <div>
           <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(ytId, start, end)} allowFullScreen/>
           {children ? children.split('\n\n').map((paragraph) =>
@@ -72,9 +72,15 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
           getBounds={this.getBounds}>
           {popover}
         </MyOverlay>
-        <div className='tutorial-link' ref={this.setRef}>
-          <tooltip.IconButton tooltip={t('Tutorial Video')} onClick={this.toggle} icon='video' />
-        </div>
+        {
+          group !== 'todo' &&
+          <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
+            <tooltip.IconButton tooltip={t(name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
+              <div className="button-text">{t(name)}</div>
+            </tooltip.IconButton>
+            
+          </div>
+        }
       </div>
     );
   }

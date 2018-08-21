@@ -15,6 +15,9 @@ export interface IYoutubeInfo {
   //  OR a number in seconds.
   start: string | number;
   end: string | number;
+
+  // Used to associate this video tutorial to a specific icon group.
+  group?: string;
 }
 
 class YtInfoImpl implements IYoutubeInfo {
@@ -24,18 +27,25 @@ class YtInfoImpl implements IYoutubeInfo {
   name: string;
   start: string | number;
   end: string | number;
+  group: string;
 
-  constructor(ytId: string, name: string, start: string|number, end: string|number){
+  constructor(ytId: string, name: string, start: string|number, end: string|number, group?: string){
     this.id = YtInfoImpl._nextId++;
     this.ytId = ytId;
     this.name = name;
     this.start = start;
     this.end = end;
+
+    if (group) {
+      this.group = group;
+    } else {
+      this.group = 'Tutorials';
+    }
   }
 }
 
-export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number) : IYoutubeInfo {
-  return new YtInfoImpl(ytId, name, start, end);
+export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number, group?: string) : IYoutubeInfo {
+  return new YtInfoImpl(ytId, name, start, end, group);
 }
 
 export default IYoutubeInfo;
