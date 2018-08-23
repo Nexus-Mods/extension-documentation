@@ -4,7 +4,6 @@ import * as ReactDOM from 'react-dom';
 import { ComponentEx, tooltip, Spinner, Webview, MainPage, FlexLayout } from 'vortex-api';
 import { translate } from 'react-i18next';
 import { ThemeToCSS } from '../ThemeToCSS';
-import TutorialButton from '../controls/TutorialButton';
 
 // Default documentation webview "landing".
 const VORTEX_DOCUMENTS_URL = 'https://help.nexusmods.com/category/46-vortex';
@@ -127,7 +126,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private setRef = ref => {
     this.mRef = ref;
     if (ref !== null) {
-      this.mWebView = ReactDOM.findDOMNode(this.mRef);
+      this.mWebView = ReactDOM.findDOMNode(this.mRef) as Element;
       Object.keys(this.mCallbacks).forEach(event => {
         this.mWebView.addEventListener(event, this.mCallbacks[event]);
       });

@@ -1,12 +1,12 @@
 {
   "name": "documentation",
   "version": "0.0.1",
-  "description": "Simple integration of NexusMods wiki",
-  "main": "./out/index.js",
+  "description": "In-Application documentation and tutorial videos",
+  "main": "./dist/index.js",
   "scripts": {
     "tsc": "tsc -p .",
     "webpack": "node ./node_modules/webpack/bin/webpack --config webpack.config.js --display-error-details --progress --profile --color",
-    "build": "npm run tsc && npm run webpack && extractInfo"
+    "build": "npm run webpack && copyfiles -f src/stylesheets/*.scss dist && extractInfo"
   },
   "author": "Black Tree Gaming Ltd.",
   "license": "GPL-3.0",
@@ -14,7 +14,7 @@
     "@types/i18next": "^8.4.0",
     "@types/react": "16.0.34",
     "@types/react-redux": "4.4.35",
-    "vortex-api": "Nexus-Mods/vortex-api",
-    "webpack": "^1.13.2"
+    "vortex-api": "Nexus-Mods/vortex-api#0.16.0",
+    "webpack": "^4.17.1"
   }
 }

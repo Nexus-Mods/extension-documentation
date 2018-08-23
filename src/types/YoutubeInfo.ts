@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export interface IYoutubeInfo {
   // id to differentiate between different video instances
   id: number;
@@ -17,38 +15,13 @@ export interface IYoutubeInfo {
   end: string | number;
 
   // Used to associate this video tutorial to a specific icon group.
-  group?: string;
-
-  open: boolean;
-}
-
-class YtInfoImpl implements IYoutubeInfo {
-  private static _nextId: number = 0;
-  id: number;
-  ytId: string;
-  name: string;
-  start: string | number;
-  end: string | number;
   group: string;
-  open: boolean;
-
-  constructor(ytId: string, name: string, start: string|number, end: string|number, group?: string){
-    this.id = YtInfoImpl._nextId++;
-    this.ytId = ytId;
-    this.name = name;
-    this.start = start;
-    this.end = end;
-    this.open = false;
-    if (group) {
-      this.group = group;
-    } else {
-      this.group = 'Tutorials';
-    }
-  }
 }
+
+let nextId = 0;
 
 export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number, group?: string) : IYoutubeInfo {
-  return new YtInfoImpl(ytId, name, start, end, group);
+  return { id: nextId++, ytId, name, start, end, group: group || 'Tutorials' };
 }
 
 export default IYoutubeInfo;

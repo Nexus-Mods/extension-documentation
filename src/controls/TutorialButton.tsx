@@ -1,15 +1,15 @@
 import * as _ from 'lodash';
-import { util, tooltip, ComponentEx } from 'vortex-api';
-const { MyOverlay } = require('vortex-api') as any;
+import { tooltip, ComponentEx, Overlay } from 'vortex-api';
 import { translate } from 'react-i18next';
 
 import { connect } from 'react-redux';
 import * as React from 'react';
 import { Popover } from 'react-bootstrap';
-import * as ReactDOM from 'react-dom';
+import * as Redux from 'redux';
 
 import getEmbedLink from '../tutorialManager'
 import { IYoutubeInfo } from '../types/YoutubeInfo';
+import { setTutorialOpen } from '../actions/session';
 
 export const VIDEO_WIDTH = 560;
 export const VIDEO_HEIGHT = 315;
@@ -18,17 +18,18 @@ export interface IBaseProps {
   children?: string;
   container?: Element;
   orientation?: 'vertical' | 'horizontal';
+  video: IYoutubeInfo;
 }
 
 interface IConnectedProps {
-  tutorials: IYoutubeInfo[];
+  open: { [tutorialId: string]: boolean },
 }
 
-type IProps = IBaseProps & IConnectedProps & IYoutubeInfo
-
-export interface IComponentState {
-  open: boolean;
+interface IActionProps {
+  onShow: (show: boolean) => void;
 }
+
+type IProps = IBaseProps & IConnectedProps & IActionProps;
 
 /**
  * Component will appear as a video icon within iconBars which users can click and view
@@ -42,64 +43,52 @@ export interface IComponentState {
  * @param {IProps} props
  * @returns
  */
-class TutorialButton extends ComponentEx<IProps, IComponentState> {
+class TutorialButton extends ComponentEx<IProps, {}> {
   private mRef: Element;
 
-  constructor(props: IProps) {
-    super(props);
-
-    this.initState({
-      open: false,
-    });
-  }
-
-  public componentWillReceiveProps(newProps: IConnectedProps) {
-    const tutVid = newProps.tutorials[this.props.id];
-    if (tutVid && this.props.open !== tutVid.open) {
-      this.nextState.open = tutVid.open;
-    }
-  }
-
   public render(): JSX.Element {
-    const { children, id, ytId, name, start, end, t, group } = this.props;
-    const { open } = this.state;
+    const { children, video, t, open, orientation } = this.props;
+
+    if (video === undefined) {
+      return null;
+    }
 
     let iconButton;
-    if (group !== 'todo') {
+    if (video.group === 'todo') {
       iconButton = (
-        <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
-            <tooltip.IconButton tooltip={t(name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
-              <div className="button-text">{t(name)}</div>
-            </tooltip.IconButton>
-        </div>
+        <div className='tutorial-link tutorial-link-todo' ref={this.setRef} />
       );
     } else {
       iconButton = (
-        <div className='tutorial-link' ref={this.setRef} />
+        <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
+          <tooltip.IconButton tooltip={t(video.name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
+            <div className="button-text">{t(video.name)}</div>
+          </tooltip.IconButton>
+        </div>
       );
     }
 
-    let pCounter = 0;
     const popover = (
-      <Popover id={`popover-${id}`} className='tutorial-popover' title={t(name)} style={{ maxWidth: '100%' }}>
+      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={t(video.name)} style={{ maxWidth: '100%' }}>
         <div>
-          <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(ytId, start, end)} allowFullScreen/>
+          <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(video.ytId, video.start, video.end)} allowFullScreen/>
           {children ? children.split('\n\n').map((paragraph) =>
-            <p key={pCounter++}>{paragraph}</p>) : null}
+            <p key={video.id}>{paragraph}</p>) : null}
         </div>
       </Popover>
     );
+    console.log('render', video, open[video.id], open);
     return (
       <div style={{ display: 'inline', width:{VIDEO_WIDTH} }}>
-        <MyOverlay
+        <Overlay
           rootClose
-          show={open}
+          show={open[video.id]}
           onHide={this.hide}
-          //orientation={orientation}
+          orientation={orientation === 'horizontal' ? 'horizontal' : 'vertical'}
           target={this.getRef}
           getBounds={this.getBounds}>
           {popover}
-        </MyOverlay>
+        </Overlay>
         {iconButton}
       </div>
     );
@@ -112,12 +101,13 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
   }
 
   private toggle = evt => {
+    const { onShow, video } = this.props;
     evt.preventDefault();
-    this.setState({ open: !this.state.open });
+    onShow(!(this.props.open[video.id] || false));
   }
 
   private hide = () => {
-    this.setState({ open: false });
+    this.props.onShow(false);
   }
 
   private getBounds = (): ClientRect => {
@@ -134,13 +124,17 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
   }
 }
 
-function mapStateToProps(state: any): IComponentState {
-    return state.session.tutorials;
+function mapStateToProps(state: any): IConnectedProps {
+  return {
+    open: state.session.tutorials.open,
+  };
 }
 
-export default translate(['common'])( connect<{}, {}, any>(mapStateToProps, {})(TutorialButton));
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps: IProps): IActionProps {
+  return {
+    onShow: (show: boolean) => dispatch(setTutorialOpen(ownProps.video.id, show)),
+  };
+}
 
-// export default
-//   translate(['common'], { wait: false })(
-//     connect(mapStateToProps)(
-//       TutorialButton)) as React.ComponentClass<{}>;
+export default translate(['common'])(
+  connect(mapStateToProps, mapDispatchToProps)(TutorialButton)) as React.ComponentClass<IBaseProps>;

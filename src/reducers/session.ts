@@ -7,16 +7,14 @@ import * as actions from '../actions/session';
 */
 const sessionReducer: types.IReducerSpec = {
   reducers: {
-    [actions.setTutorials as any]: (state, payload) =>
-      util.setSafe(state, ['tutorials'], payload),
-    [actions.toggleTutorial as any]: (state, payload) => {
+    [actions.setTutorialOpen as any]: (state, payload) => {
       const { id, open } = payload;
-      return util.setSafe(state, ['tutorials', id, 'open'], !open);
+      return util.setSafe(state, ['open', id], open);
     },
   },
 
   defaults: {
-    tutorials: [],
+    open: {},
   },
 };
 
