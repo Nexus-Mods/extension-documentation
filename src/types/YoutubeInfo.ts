@@ -18,6 +18,8 @@ export interface IYoutubeInfo {
 
   // Used to associate this video tutorial to a specific icon group.
   group?: string;
+
+  open: boolean;
 }
 
 class YtInfoImpl implements IYoutubeInfo {
@@ -28,6 +30,7 @@ class YtInfoImpl implements IYoutubeInfo {
   start: string | number;
   end: string | number;
   group: string;
+  open: boolean;
 
   constructor(ytId: string, name: string, start: string|number, end: string|number, group?: string){
     this.id = YtInfoImpl._nextId++;
@@ -35,7 +38,7 @@ class YtInfoImpl implements IYoutubeInfo {
     this.name = name;
     this.start = start;
     this.end = end;
-
+    this.open = false;
     if (group) {
       this.group = group;
     } else {

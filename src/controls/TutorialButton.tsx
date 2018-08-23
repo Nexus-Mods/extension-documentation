@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
-import { tooltip, ComponentEx } from 'vortex-api';
+import { util, tooltip, ComponentEx } from 'vortex-api';
 const { MyOverlay } = require('vortex-api') as any;
 import { translate } from 'react-i18next';
 
+import { connect } from 'react-redux';
 import * as React from 'react';
 import { Popover } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
@@ -10,18 +11,20 @@ import * as ReactDOM from 'react-dom';
 import getEmbedLink from '../tutorialManager'
 import { IYoutubeInfo } from '../types/YoutubeInfo';
 
-const VIDEO_WIDTH = 560;
-const VIDEO_HEIGHT = 315;
+export const VIDEO_WIDTH = 560;
+export const VIDEO_HEIGHT = 315;
 
 export interface IBaseProps {
-  id: string;
-  name: string;
   children?: string;
   container?: Element;
   orientation?: 'vertical' | 'horizontal';
 }
 
-type IProps = IBaseProps & IYoutubeInfo
+interface IConnectedProps {
+  tutorials: IYoutubeInfo[];
+}
+
+type IProps = IBaseProps & IConnectedProps & IYoutubeInfo
 
 export interface IComponentState {
   open: boolean;
@@ -42,14 +45,36 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {
+    this.initState({
       open: false,
-    };
+    });
+  }
+
+  public componentWillReceiveProps(newProps: IConnectedProps) {
+    const tutVid = newProps.tutorials[this.props.id];
+    if (tutVid && this.props.open !== tutVid.open) {
+      this.nextState.open = tutVid.open;
+    }
   }
 
   public render(): JSX.Element {
     const { children, id, ytId, name, start, end, t, group } = this.props;
     const { open } = this.state;
+
+    let iconButton;
+    if (group !== 'todo') {
+      iconButton = (
+        <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
+            <tooltip.IconButton tooltip={t(name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
+              <div className="button-text">{t(name)}</div>
+            </tooltip.IconButton>
+        </div>
+      );
+    } else {
+      iconButton = (
+        <div className='tutorial-link' ref={this.setRef} />
+      );
+    }
 
     let pCounter = 0;
     const popover = (
@@ -72,15 +97,7 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
           getBounds={this.getBounds}>
           {popover}
         </MyOverlay>
-        {
-          group !== 'todo' &&
-          <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
-            <tooltip.IconButton tooltip={t(name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
-              <div className="button-text">{t(name)}</div>
-            </tooltip.IconButton>
-            
-          </div>
-        }
+        {iconButton}
       </div>
     );
   }
@@ -114,5 +131,13 @@ class TutorialButton extends ComponentEx<IProps, IComponentState> {
   }
 }
 
-export default 
-  translate(['common'])(TutorialButton);
+function mapStateToProps(state: any): IComponentState {
+    return state.session.tutorials;
+}
+
+export default translate(['common'])( connect<{}, {}, any>(mapStateToProps, {})(TutorialButton));
+
+// export default
+//   translate(['common'], { wait: false })(
+//     connect(mapStateToProps)(
+//       TutorialButton)) as React.ComponentClass<{}>;
