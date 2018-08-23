@@ -31,8 +31,11 @@ export interface IComponentState {
 }
 
 /**
- * Component will appear as a video icon which users can click and view
+ * Component will appear as a video icon within iconBars which users can click and view
  *  tutorial videos relevant to the section they're on.
+ * 
+ * Todo items are supported as well but will not provide a button or button text when rendered; 
+ *  these must be provided upon calling the registerTodo extension function. 
  * 
  * double-linebreaks can be used in the text to start a new paragraph.
  *

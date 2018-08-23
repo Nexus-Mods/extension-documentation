@@ -27,7 +27,6 @@ export default function init(context: types.IExtensionContext) {
     tutData.forEach(element => {
       if (element.group === TODO_GROUP) {
         // Add the tutorial video to the TODO dashlet.
-        //context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Video Tutorial', undefined, undefined, () => popoverLeft, undefined);
         context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Video Tutorial', () => {
           context.api.store.dispatch(toggleTutorial(element.id, element.open));
         }, undefined, (t) => (
@@ -60,17 +59,3 @@ export default function init(context: types.IExtensionContext) {
 
   return true;
 };
-
-class TutorialTodo extends React.Component{
-  render(){
-      return React.createElement(
-          "div",
-          null,
-          React.createElement(
-              "h1",
-              null,
-              "Hello World!"
-          )
-      );
-  }
-}

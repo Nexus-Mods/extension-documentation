@@ -23,10 +23,10 @@ const VIDEO_IDS = [
 ];
 
 const TUTORIAL_DATA: Array<IYoutubeInfo> = [
-  createTutorialVideo(VIDEO_IDS[0], 'Login tutorial', '2.05', '2.55', ICONBAR_GROUPS[0]),
-  createTutorialVideo(VIDEO_IDS[0], 'Dasboard introduction', '2.56', '3.32', ICONBAR_GROUPS[0]),
-  createTutorialVideo(VIDEO_IDS[0], 'Multi User Mode', '3.33', '4.41', ICONBAR_GROUPS[0]),
-  createTutorialVideo(VIDEO_IDS[0], 'Mod management', '4.42', '8.15', TODO_GROUP),
+  //createTutorialVideo(VIDEO_IDS[0], 'Login tutorial', '2.05', '2.55', ICONBAR_GROUPS[0]),
+  //createTutorialVideo(VIDEO_IDS[0], 'Dasboard introduction', '2.56', '3.32', ICONBAR_GROUPS[0]),
+  //createTutorialVideo(VIDEO_IDS[0], 'Multi User Mode', '3.33', '4.41', ICONBAR_GROUPS[0]),
+  createTutorialVideo(VIDEO_IDS[0], 'Mod management', '2.05', '8.14', TODO_GROUP),
 
   //createTutorialVideo(VIDEO_IDS[1], 'Handling Nexus Links', '0.20', '1.02'),
   //createTutorialVideo(VIDEO_IDS[1], 'Download/Install automatically', '1.02', '5.05'),
