@@ -10,6 +10,7 @@ const VORTEX_DOCUMENTS_URL = 'https://help.nexusmods.com/category/46-vortex';
 
 interface IComponentState {
   loading: boolean;
+  display: boolean;
   url: string;
   history: string[];
   historyIdx: number;
@@ -30,6 +31,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     super(props);
     this.initState({
       loading: false,
+      display: false,
       url: VORTEX_DOCUMENTS_URL,
       history: [VORTEX_DOCUMENTS_URL],
       historyIdx: 0,
@@ -39,6 +41,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
       'did-finish-load': () => {
         const newUrl: string = (this.mWebView as any).getURL();
         this.nextState.url = newUrl;
+
         if (newUrl !== this.nextState.history[this.nextState.historyIdx]) {
           this.nextState.history.splice(this.nextState.historyIdx + 1, 9999, newUrl);
           ++this.nextState.historyIdx;
@@ -52,7 +55,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   public render(): JSX.Element {
     const { t } = this.props;
-    const { loading, history, historyIdx, url } = this.state;
+    const { display, loading, history, historyIdx, url } = this.state;
 
     return (
       <MainPage>
@@ -75,10 +78,10 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
           <div className='flex-fill' />
         </MainPage.Header>
         <MainPage.Body>
-          {loading ? this.renderWait() : null}
           <FlexLayout type='column' className='documentation'>
+            {loading ? this.renderWait() : null}
             <Webview
-              style={{ width: '100%', height: '100%' }}
+              style={{ visibility: display != false ? 'visible': 'hidden', width: '100%', height: '100%'}}
               src={url}
               onLoading={this.onLoading}
               ref={this.setRef}
@@ -90,7 +93,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   }
 
   private onLoading = (loading: boolean) => {
-    this.setState({ loading });
+    this.nextState.display = !(this.nextState.loading = loading);
   }
 
   private renderWait() {

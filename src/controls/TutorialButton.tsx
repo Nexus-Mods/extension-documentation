@@ -77,6 +77,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </div>
       </Popover>
     );
+    //console.log('render', video, open[video.id], open);
     return (
       <div style={{ display: 'inline', width:{VIDEO_WIDTH} }}>
         <Overlay

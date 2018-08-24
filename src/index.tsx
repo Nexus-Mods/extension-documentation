@@ -22,7 +22,7 @@ export default function init(context: types.IExtensionContext) {
   tutData.forEach(element => {
     if (element.group === TODO_GROUP) {
       // Add the tutorial video to the TODO dashlet.
-      context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Video Tutorial', () => {
+      context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Vortex Introduction', () => {
         const { store } = context.api;
         store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials', 'open', element.id], false)));
       }, undefined, (t) => (
@@ -31,7 +31,7 @@ export default function init(context: types.IExtensionContext) {
         , undefined);
     } else {
       // Add the tutorial item to the relevant icon group.
-      context.registerAction(element.group, 0, TutorialButton, {}, () => ({
+      context.registerAction(element.group, 300, TutorialButton, {}, () => ({
         video: element }));
     }
   });
