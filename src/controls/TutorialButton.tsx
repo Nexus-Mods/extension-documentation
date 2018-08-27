@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Popover } from 'react-bootstrap';
 import * as Redux from 'redux';
 
-import getEmbedLink from '../tutorialManager'
+import getEmbedLink, { TUT_PREFIX } from '../tutorialManager'
 import { IYoutubeInfo } from '../types/YoutubeInfo';
 import { setTutorialOpen } from '../actions/session';
 
@@ -22,11 +22,12 @@ export interface IBaseProps {
 }
 
 interface IConnectedProps {
-  open: { [tutorialId: string]: boolean },
+  tutorialId: number,
+  isOpen: boolean,
 }
 
 interface IActionProps {
-  onShow: (show: boolean) => void;
+  onShow: (id: number, open: boolean) => void;
 }
 
 type IProps = IBaseProps & IConnectedProps & IActionProps;
@@ -47,7 +48,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
   private mRef: Element;
 
   public render(): JSX.Element {
-    const { children, video, t, open, orientation } = this.props;
+    const { children, video, t, tutorialId, orientation, isOpen } = this.props;
 
     if (video === undefined) {
       return null;
@@ -61,15 +62,30 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     } else {
       iconButton = (
         <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
-          <tooltip.IconButton tooltip={t(video.name)} onClick={this.toggle} icon='video' style={{ height: '100%' }}>
+          <tooltip.IconButton tooltip={t(video.name)} onClick={this.show} icon='video' style={{ height: '100%' }}>
             <div className="button-text">{t(video.name)}</div>
           </tooltip.IconButton>
         </div>
       );
     }
 
+    const popOverTitle = (
+      <div style={{
+        display: 'flex', 
+        justifyContent: 'space-between',
+        alignItems: 'center'}}>
+        <h3 style={{ fontSize: '14px' }}>{t(video.name.replace(TUT_PREFIX, ''))}</h3>
+        <tooltip.IconButton 
+          icon='close-slim'
+          tooltip={t('Dismiss')}
+          className='btn-embed btn-dismiss'
+          onClick={this.hide} 
+          style={{color: 'white'}}/>
+      </div>
+    );
+
     const popover = (
-      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={t(video.name)} style={{ maxWidth: '100%' }}>
+      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle} style={{ maxWidth: '100%' }}>
         <div>
           <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(video.ytId, video.start, video.end)} allowFullScreen/>
           {children ? children.split('\n\n').map((paragraph) =>
@@ -77,12 +93,11 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </div>
       </Popover>
     );
-    //console.log('render', video, open[video.id], open);
+    //console.log('render', open);
     return (
       <div style={{ display: 'inline', width:{VIDEO_WIDTH} }}>
         <Overlay
-          rootClose
-          show={open[video.id]}
+          show={tutorialId === video.id && isOpen}
           onHide={this.hide}
           orientation={orientation === 'horizontal' ? 'horizontal' : 'vertical'}
           target={this.getRef}
@@ -100,14 +115,15 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     this.mRef = ref;
   }
 
-  private toggle = evt => {
-    const { onShow, video } = this.props;
+  private show = evt => {
+    const { onShow, video, isOpen } = this.props;
     evt.preventDefault();
-    onShow(!(this.props.open[video.id] || false));
+    onShow(video.id, !isOpen);
   }
 
   private hide = () => {
-    this.props.onShow(false);
+    const { onShow, video } = this.props;
+    onShow(video.id, false);
   }
 
   private getBounds = (): ClientRect => {
@@ -126,13 +142,14 @@ class TutorialButton extends ComponentEx<IProps, {}> {
 
 function mapStateToProps(state: any): IConnectedProps {
   return {
-    open: state.session.tutorials.open,
+    tutorialId: state.session.tutorials.currentTutorial.tutorialId,
+    isOpen: state.session.tutorials.currentTutorial.isOpen,
   };
 }
 
 function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps: IProps): IActionProps {
   return {
-    onShow: (show: boolean) => dispatch(setTutorialOpen(ownProps.video.id, show)),
+    onShow: (id: number, open: boolean) => dispatch(setTutorialOpen(id, open)),
   };
 }
 

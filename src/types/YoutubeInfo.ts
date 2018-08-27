@@ -18,7 +18,7 @@ export interface IYoutubeInfo {
   group: string;
 }
 
-let nextId = 0;
+export let nextId = 0;
 
 export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number, group?: string) : IYoutubeInfo {
   return { id: nextId++, ytId, name, start, end, group: group || 'Tutorials' };

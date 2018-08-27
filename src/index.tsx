@@ -24,7 +24,7 @@ export default function init(context: types.IExtensionContext) {
       // Add the tutorial video to the TODO dashlet.
       context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Vortex Introduction', () => {
         const { store } = context.api;
-        store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials', 'open', element.id], false)));
+        store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials','currentTutorial', 'isOpen'], false)));
       }, undefined, (t) => (
         <TutorialButton video={element} />
       )

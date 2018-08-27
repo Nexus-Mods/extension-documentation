@@ -7,7 +7,7 @@ const YOUTUBE_LINK = "https://www.youtube.com/embed/";
 //  todo items on the dashboard.
 export const TODO_GROUP = 'todo';
 
-const TUT_PREFIX = 'Tutorial-';
+export const TUT_PREFIX = 'Tutorial-';
 
 // Array of iconbar groups which can be used to place tutorial buttons.
 const ICONBAR_GROUPS = {
