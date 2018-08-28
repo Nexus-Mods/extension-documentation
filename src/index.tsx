@@ -5,6 +5,7 @@ import { types, util } from 'vortex-api';
 import sessionReducer from './reducers/session';
 import { getTutorialData, TODO_GROUP } from './tutorialManager';
 import TutorialButton from './controls/TutorialButton';
+import TutorialDropdown from './controls/TutorialDropdown';
 import { setTutorialOpen, closeTutorials } from './actions/session';
 
 export default function init(context: types.IExtensionContext) {
@@ -18,21 +19,29 @@ export default function init(context: types.IExtensionContext) {
 
   const tutData = getTutorialData();
 
-  // Populate the store with default video tutorial information.
-  tutData.forEach(element => {
-    if (element.group === TODO_GROUP) {
+  Object.keys(tutData).forEach((key, value) => {
+    if (key === TODO_GROUP) {
+      const element = tutData[key][0];
       // Add the tutorial video to the TODO dashlet.
       context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Vortex Introduction', () => {
         const { store } = context.api;
-        store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials','currentTutorial', 'isOpen'], false)));
+        store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)));
       }, undefined, (t) => (
         <TutorialButton video={element} />
-      )
-        , undefined);
+      ), undefined);
     } else {
-      // Add the tutorial item to the relevant icon group.
-      context.registerAction(element.group, 300, TutorialButton, {}, () => ({
-        video: element }));
+      if (tutData[key].length === 1) {
+        const element = tutData[key][0];
+        // Add the tutorial item to the relevant icon group.
+        context.registerAction(key, 300, TutorialButton, {}, () => ({
+          video: element
+        }));
+      } else {
+        context.registerAction(key, 300, TutorialDropdown, {}, () => ({
+          groupName: key,
+          videos: tutData[key],
+        }));
+      }
     }
   });
 

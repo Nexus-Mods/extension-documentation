@@ -1,4 +1,5 @@
 import IYoutubeInfo, { createTutorialVideo } from "./types/YoutubeInfo";
+import { Map } from "../../../node_modules/@types/d3";
 
 // Used when generating the embedding link to use within the tutorial popover window.
 const YOUTUBE_LINK = "https://www.youtube.com/embed/";
@@ -12,10 +13,10 @@ export const TUT_PREFIX = 'Tutorial-';
 // Array of iconbar groups which can be used to place tutorial buttons.
 const ICONBAR_GROUPS = {
   plugins: 'gamebryo-plugin-icons',
-  mods: 'mod-icons'
+  mods: 'mod-icons',
 }; 
 
-// Regex pattern used to test string timestamps and convert them to numbers.
+// Regex pattern used to test string timestamps and convert them to number of seconds.
 const regexPattern: RegExp = /^([0-5][0-9]|[0-9])(:|\.)[0-5][0-9]$/;
 
 const VIDEO_IDS = {
@@ -25,21 +26,29 @@ const VIDEO_IDS = {
   plugins: 'BQj8I5g4Qm4',
 };
 
-const TUTORIAL_DATA: Array<IYoutubeInfo> = [
-  createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),
+const TUTORIAL_DATA = {
+  [ICONBAR_GROUPS.plugins]: [
+    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
+  ],
+  [ICONBAR_GROUPS.mods]: [
+    createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
+    createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.fomods, TUT_PREFIX + 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
+  ],
+  [TODO_GROUP]: [
+    createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),
+  ]
+}
 
-  createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods),
-  createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
-  createTutorialVideo(VIDEO_IDS.fomods, TUT_PREFIX + 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
-  
-  createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
-  createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
-  createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
-  createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
-  createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
-];
+export function getTutorialData(group?: string) {
+  if (group && group in TUTORIAL_DATA) {
+    return TUTORIAL_DATA[group];
+  }
 
-export function getTutorialData() : IYoutubeInfo[] {
   return TUTORIAL_DATA;
 }
 
