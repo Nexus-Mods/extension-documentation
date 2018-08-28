@@ -5,7 +5,7 @@ import { types, util } from 'vortex-api';
 import sessionReducer from './reducers/session';
 import { getTutorialData, TODO_GROUP } from './tutorialManager';
 import TutorialButton from './controls/TutorialButton';
-import { setTutorialOpen } from './actions/session';
+import { setTutorialOpen, closeTutorials } from './actions/session';
 
 export default function init(context: types.IExtensionContext) {
 
@@ -38,6 +38,12 @@ export default function init(context: types.IExtensionContext) {
 
   context.once(() => {
     context.api.setStylesheet('documentation', path.join(__dirname, 'documentation.scss'));
+
+    // User has moved onto a different page; we can close any open tutorial
+    //  videos.
+    context.api.onStateChange(['session', 'base', 'mainPage'], () => {
+      context.api.store.dispatch(closeTutorials());
+    });
   });
 
   return true;
