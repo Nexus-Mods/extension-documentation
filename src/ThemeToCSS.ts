@@ -10,7 +10,7 @@ export class ThemeToCSS {
   public static getCSSInjectString( rules: CSSStyleRule[] ) : string { 
     const variables = this.transformRules(rules);
     // String containing the css code we want to inject into the webview object
-    return ( `html, body { background-color: ${variables[BACKGROUND_RULE]} !important; }
+    return ( `html, body { background: transparent !important; }
     
     #fullArticle div, h1, h2, h3, h4, h5, p, td, li, strong { color: ${variables['text-color']} !important; }
     
@@ -23,8 +23,6 @@ export class ThemeToCSS {
     border-bottom-color: ${variables['border-color']} !important;
     border-right-color: ${variables['border-color']} !important;
     border-left-color: ${variables['border-color']} !important; }
-
-    svg .theme-primary: { fill: #da8e35 }
 
     footer { pointer-events: none; }
 

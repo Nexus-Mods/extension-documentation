@@ -1,7 +1,33 @@
+$tut-video-width: 560;
+$tut-video-height: 315;
+
 .tutorial-link-todo {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.tutorial-link { height: 100%; }
+
+.tutorial-link button { 
+  margin-right: 0 !important;
+  height: 100%;
+ }
+
+.popover-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popover-title-container button { color: white; }
+
+.popover-title-container h3 { font-size: 14px !important; }
+
+.tutorial-popover { max-width: 100%; }
+
+.tutorial-button-instance { 
+  width: $tut-video-width;
 }

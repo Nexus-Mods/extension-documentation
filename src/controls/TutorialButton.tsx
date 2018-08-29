@@ -70,23 +70,18 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     }
 
     const popOverTitle = (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <h3 style={{ fontSize: '14px' }}>{t(video.name)}</h3>
+      <div className='popover-title-container'>
+        <h3>{t(video.name)}</h3>
         <tooltip.IconButton
           icon='close-slim'
           tooltip={t('Dismiss')}
           className='btn-embed btn-dismiss'
-          onClick={this.hide}
-          style={{ color: 'white' }} />
+          onClick={this.hide}/>
       </div>
     );
 
     const popover = (
-      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle} style={{ maxWidth: '100%' }}>
+      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle}>
         <div>
           <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(video.ytId, video.start, video.end)} allowFullScreen />
           {children ? children.split('\n\n').map((paragraph) =>
@@ -108,14 +103,14 @@ class TutorialButton extends ComponentEx<IProps, {}> {
 
     if (dropdown) {
       return (
-        <li role="presentation" style={{ display: 'inline', width: { VIDEO_WIDTH } }}>
+        <li className='tutorial-button-instance' role='presentation'>
           {overlay}
           {iconButton}
         </li>
       )
     } else {
       return (
-        <div style={{ display: 'inline', width: { VIDEO_WIDTH } }}>
+        <div className='tutorial-button-instance'>
           {overlay}
           {iconButton}
         </div>
@@ -131,15 +126,15 @@ class TutorialButton extends ComponentEx<IProps, {}> {
 
   private renderDropdownButton(t: TranslationFunction, name: string): JSX.Element {
     return (
-      <a ref={this.setRef} onClick={this.show} role="menuitem">{t(name)}</a>
+      <a ref={this.setRef} onClick={this.show} role='menuitem'>{t(name)}</a>
     )
   }
 
   private renderButton(t: TranslationFunction, name: string): JSX.Element {
     return (
-      <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
-        <tooltip.IconButton tooltip={t(name)} onClick={this.show} icon='video' style={{ marginRight: '0', height: '100%' }}>
-          <div className="button-text">{t(name)}</div>
+      <div className='tutorial-link' ref={this.setRef}>
+        <tooltip.IconButton tooltip={t(name)} onClick={this.show} icon='video'>
+          <div className='button-text'>{t(name)}</div>
         </tooltip.IconButton>
       </div>
     )
@@ -186,7 +181,7 @@ function mapStateToProps(state: any): IConnectedProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps: IProps): IActionProps {
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>): IActionProps {
   return {
     onShow: (id: number, open: boolean) => dispatch(setTutorialOpen(id, open)),
   };

@@ -1,8 +1,7 @@
-import IYoutubeInfo, { createTutorialVideo } from "./types/YoutubeInfo";
-import { Map } from "../../../node_modules/@types/d3";
+import IYoutubeInfo, { createTutorialVideo } from './types/YoutubeInfo';
 
 // Used when generating the embedding link to use within the tutorial popover window.
-const YOUTUBE_LINK = "https://www.youtube.com/embed/";
+const YOUTUBE_LINK = 'https://www.youtube.com/embed/';
 
 // Tutorial buttons which are assigned the todo group will registered as
 //  todo items on the dashboard.
@@ -40,8 +39,8 @@ const TUTORIAL_DATA = {
   ],
   [ICONBAR_GROUPS.mods]: [
     createTutorialVideo(VIDEO_IDS.installing, 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
-    createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
-    createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
+    //createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
+    //createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
   ],
   [TODO_GROUP]: [
     createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),
@@ -60,17 +59,17 @@ function getEmbedLink(id: string, start: string|number, end: string|number): str
   let srcLink = YOUTUBE_LINK;
   let startSeconds: number = 0, endSeconds: number = 0;
 
-  if (typeof start === "number") {
+  if (typeof start === 'number') {
     startSeconds = start;
-  } else if (typeof start === "string") {
+  } else if (typeof start === 'string') {
     startSeconds = convertTimeToSeconds(start);
   } else {
     startSeconds = 0;
   }
 
-  if (typeof end === "number") {
+  if (typeof end === 'number') {
     endSeconds = end;
-  } else if (typeof start === "string") {
+  } else if (typeof start === 'string') {
     endSeconds = convertTimeToSeconds(end);
   } else {
     endSeconds = 0;

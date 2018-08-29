@@ -19,14 +19,14 @@ class TutorialDropdown extends ComponentEx<IProps, {}> {
 
     let titleContent: JSX.Element;
     titleContent = (
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems: 'center', width: '100%', height: '70%' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', flexDirection:'column', alignItems: 'center', maxWidth: '100%', width: '100%', height: '70%' }}>
         <tooltip.Icon style={{ marginRight: '0px' }} name='video' buttonType='icon' tooltip={t('Tutorial videos')}/>
         <div className='button-text'>{t('Tutorials')}</div>
       </div>
     );
 
     let dropdownButton = (
-      <DropdownButton style={{ display: 'inline', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', maxWidth: '100%' }} title={titleContent} id={'tutorial-' + groupName}>
+      <DropdownButton style={{ display: 'inline', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', maxWidth: '100%' }} title={titleContent} id={'tutorial-dropdown' + groupName}>
         {videos.map((video) => <TutorialButton key={video.group + video.id} dropdown video={video} />)}
       </DropdownButton>
     );
