@@ -1,13 +1,13 @@
-import * as _ from 'lodash';
 import { tooltip, ComponentEx, Overlay } from 'vortex-api';
 import { translate, TranslationFunction } from 'react-i18next';
 
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { Popover, MenuItem } from 'react-bootstrap';
+import { Popover } from 'react-bootstrap';
+import * as ReactDOM from 'react-dom';
 import * as Redux from 'redux';
 
-import getEmbedLink, { TUT_PREFIX } from '../tutorialManager'
+import getEmbedLink from '../tutorialManager'
 import { IYoutubeInfo } from '../types/YoutubeInfo';
 import { setTutorialOpen } from '../actions/session';
 
@@ -34,8 +34,11 @@ interface IActionProps {
 type IProps = IBaseProps & IConnectedProps & IActionProps;
 
 /**
- * Component will appear as a video icon within iconBars which users can click and view
+ * Component will appear as a single video icon within iconBars which users can click and view
  *  tutorial videos relevant to the section they're on.
+ * 
+ * A Dropdown button will be created when multiple tutorial videos are linked to the same icon
+ *  bar.
  * 
  * Todo items are supported as well but will not provide a button or button text when rendered; 
  *  these must be provided upon calling the registerTodo extension function. 
@@ -55,16 +58,14 @@ class TutorialButton extends ComponentEx<IProps, {}> {
       return null;
     }
 
-    let trimmedName = video.name.replace(TUT_PREFIX, '');
-
     let iconButton;
     if (video.group === 'todo') {
       iconButton = this.renderTodo();
     } else {
       if (dropdown) {
-        iconButton = this.renderDropdownButton(t, trimmedName);
+        iconButton = this.renderDropdownButton(t, video.name);
       } else {
-        iconButton = this.renderButton(t, trimmedName);
+        iconButton = this.renderButton(t, video.name);
       }
     }
 
@@ -74,7 +75,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <h3 style={{ fontSize: '14px' }}>{t(trimmedName)}</h3>
+        <h3 style={{ fontSize: '14px' }}>{t(video.name)}</h3>
         <tooltip.IconButton
           icon='close-slim'
           tooltip={t('Dismiss')}
@@ -93,20 +94,33 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </div>
       </Popover>
     );
-    //console.log('render', open);
-    return (
-      <div style={{ display: 'inline', width: { VIDEO_WIDTH } }}>
-        <Overlay
-          show={tutorialId === video.id && isOpen}
-          onHide={this.hide}
-          orientation={orientation === 'horizontal' ? 'horizontal' : 'vertical'}
-          target={this.getRef}
-          getBounds={this.getBounds}>
-          {popover}
-        </Overlay>
-        {iconButton}
-      </div>
+
+    const overlay = (
+      <Overlay
+        show={tutorialId === video.id && isOpen}
+        onHide={this.hide}
+        orientation={orientation === 'horizontal' ? 'horizontal' : 'vertical'}
+        target={this.getRef}
+        getBounds={this.getBounds}>
+        {popover}
+      </Overlay>
     );
+
+    if (dropdown) {
+      return (
+        <li role="presentation" style={{ display: 'inline', width: { VIDEO_WIDTH } }}>
+          {overlay}
+          {iconButton}
+        </li>
+      )
+    } else {
+      return (
+        <div style={{ display: 'inline', width: { VIDEO_WIDTH } }}>
+          {overlay}
+          {iconButton}
+        </div>
+      );
+    }
   }
 
   private renderTodo(): JSX.Element {
@@ -116,16 +130,15 @@ class TutorialButton extends ComponentEx<IProps, {}> {
   }
 
   private renderDropdownButton(t: TranslationFunction, name: string): JSX.Element {
-    const { video } = this.props;
     return (
-      <MenuItem key={video.group + video.id} ref={this.setRef} onClick={this.show} eventKey={this.show}>{t(name)}</MenuItem>
+      <a ref={this.setRef} onClick={this.show} role="menuitem">{t(name)}</a>
     )
   }
 
   private renderButton(t: TranslationFunction, name: string): JSX.Element {
     return (
       <div style={{ height: '100%' }} className='tutorial-link' ref={this.setRef}>
-        <tooltip.IconButton tooltip={t(name)} onClick={this.show} icon='video' style={{ height: '100%' }}>
+        <tooltip.IconButton tooltip={t(name)} onClick={this.show} icon='video' style={{ marginRight: '0', height: '100%' }}>
           <div className="button-text">{t(name)}</div>
         </tooltip.IconButton>
       </div>
@@ -136,6 +149,9 @@ class TutorialButton extends ComponentEx<IProps, {}> {
 
   private setRef = ref => {
     this.mRef = ref;
+    if (ref !== null) {
+      this.mRef = ReactDOM.findDOMNode(this.mRef) as Element;
+    }
   }
 
   private show = evt => {

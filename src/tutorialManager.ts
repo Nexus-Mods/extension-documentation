@@ -8,8 +8,6 @@ const YOUTUBE_LINK = "https://www.youtube.com/embed/";
 //  todo items on the dashboard.
 export const TODO_GROUP = 'todo';
 
-export const TUT_PREFIX = 'Tutorial-';
-
 // Array of iconbar groups which can be used to place tutorial buttons.
 const ICONBAR_GROUPS = {
   plugins: 'gamebryo-plugin-icons',
@@ -19,6 +17,7 @@ const ICONBAR_GROUPS = {
 // Regex pattern used to test string timestamps and convert them to number of seconds.
 const regexPattern: RegExp = /^([0-5][0-9]|[0-9])(:|\.)[0-5][0-9]$/;
 
+// Map of youtube video ids.
 const VIDEO_IDS = {
   intro: 'sD9xKao_u30',
   installing: 'OrZM9LSuDhU',
@@ -26,18 +25,23 @@ const VIDEO_IDS = {
   plugins: 'BQj8I5g4Qm4',
 };
 
+/**
+ * The documentation module uses the tutorial data map to populate the UI with tutorial buttons.
+ *  - The keys must be set to a valid iconbar group names.
+ *  - Use the createTutorialVideo to add tutorial videos.
+ */
 const TUTORIAL_DATA = {
   [ICONBAR_GROUPS.plugins]: [
-    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, TUT_PREFIX + 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
   ],
   [ICONBAR_GROUPS.mods]: [
-    createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
-    createTutorialVideo(VIDEO_IDS.installing, TUT_PREFIX + 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
-    createTutorialVideo(VIDEO_IDS.fomods, TUT_PREFIX + 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.installing, 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
+    createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
   ],
   [TODO_GROUP]: [
     createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),
