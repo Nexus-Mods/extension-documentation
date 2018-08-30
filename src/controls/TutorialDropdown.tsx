@@ -1,10 +1,16 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { DropdownButton } from 'react-bootstrap';
 import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
 import { ComponentEx, tooltip } from 'vortex-api';
 import TutorialButton from './TutorialButton';
 
 import IYoutubeInfo from '../types/YoutubeInfo';
+
+interface IComponentState {
+  show: boolean;
+}
 
 interface IBaseProps {
   groupName: string;
@@ -13,8 +19,18 @@ interface IBaseProps {
 
 type IProps = IBaseProps;
 
-class TutorialDropdown extends ComponentEx<IProps, {}> {
+class TutorialDropdown extends ComponentEx<IProps, IComponentState> {
+  private mRef: Element;
+
+  constructor(props: IProps) {
+    super(props);
+    this.initState({
+      show: false
+    })
+  }
+
   public render(): JSX.Element {
+    const { show } = this.state;
     const { t, groupName, videos } = this.props;
 
     let titleContent: JSX.Element;
@@ -25,13 +41,22 @@ class TutorialDropdown extends ComponentEx<IProps, {}> {
       </div>
     );
 
-    let dropdownButton = (
-      <DropdownButton className='tutorial-dropdown-group' title={titleContent} id={'tutorial-dropdown' + groupName}>
-        {videos.map((video) => <TutorialButton key={video.group + video.id} dropdown video={video} />)}
+    return (
+      <DropdownButton onToggle={this.onToggle} open={show} ref={this.setRef} className='tutorial-dropdown-group' title={titleContent} id={'tutorial-dropdown' + groupName}>
+        {videos.map((video) => <TutorialButton onClick={this.onToggle} container={this.mRef} key={video.group + video.id} dropdown video={video} />)}
       </DropdownButton>
     );
+  }
 
-    return dropdownButton;
+  private onToggle = (value: boolean) => {
+    this.nextState.show = value;
+  }
+
+  private setRef = ref => {
+    this.mRef = ref;
+    if (ref !== null) {
+      this.mRef = ReactDOM.findDOMNode(this.mRef) as Element;
+    }
   }
 }
 

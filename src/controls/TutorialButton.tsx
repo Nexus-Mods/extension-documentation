@@ -20,6 +20,10 @@ export interface IBaseProps {
   orientation?: 'vertical' | 'horizontal';
   video: IYoutubeInfo;
   dropdown?: boolean;
+
+  // An optional callback function executed whenever
+  //  the users clicks the button.
+  onClick?: (value: boolean) => void;
 }
 
 interface IConnectedProps {
@@ -125,8 +129,10 @@ class TutorialButton extends ComponentEx<IProps, {}> {
   }
 
   private renderDropdownButton(t: TranslationFunction, name: string): JSX.Element {
+    const { container } = this.props;
+    
     return (
-      <a ref={this.setRef} onClick={this.show} role='menuitem'>{t(name)}</a>
+      <a ref={container !== undefined ? null : this.setRef} onClick={this.show} role='menuitem'>{t(name)}</a>
     )
   }
 
@@ -140,7 +146,14 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     )
   }
 
-  private getRef = () => this.mRef;
+  private getRef = () => {
+    const { container } = this.props;
+    if (container !== undefined) {
+      return container;
+    }
+
+    return this.mRef;
+  } 
 
   private setRef = ref => {
     this.mRef = ref;
@@ -150,14 +163,21 @@ class TutorialButton extends ComponentEx<IProps, {}> {
   }
 
   private show = evt => {
-    const { onShow, video, isOpen } = this.props;
+    const { onClick, onShow, video, isOpen } = this.props;
     evt.preventDefault();
     onShow(video.id, !isOpen);
+
+    if (onClick) {
+      onClick(false);
+    }
   }
 
   private hide = () => {
-    const { onShow, video } = this.props;
+    const { onClick, onShow, video } = this.props;
     onShow(video.id, false);
+    // if (onClick) {
+    //   onClick(true);
+    // }
   }
 
   private getBounds = (): ClientRect => {
