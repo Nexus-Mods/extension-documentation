@@ -39,8 +39,8 @@ const TUTORIAL_DATA = {
   ],
   [ICONBAR_GROUPS.mods]: [
     createTutorialVideo(VIDEO_IDS.installing, 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
-    //createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
-    //createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
   ],
   [TODO_GROUP]: [
     createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),

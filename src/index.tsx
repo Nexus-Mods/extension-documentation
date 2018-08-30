@@ -19,7 +19,7 @@ export default function init(context: types.IExtensionContext) {
 
   const tutData = getTutorialData();
 
-  Object.keys(tutData).forEach((key, value) => {
+  Object.keys(tutData).forEach((key) => {
     if (key === TODO_GROUP) {
       const element = tutData[key][0];
       // Add the tutorial video to the TODO dashlet.
@@ -33,11 +33,11 @@ export default function init(context: types.IExtensionContext) {
       if (tutData[key].length === 1) {
         const element = tutData[key][0];
         // Add the tutorial item to the relevant icon group.
-        context.registerAction(key, 300, TutorialButton, {}, () => ({
+        context.registerAction(key, 400, TutorialButton, {}, () => ({
           video: element
         }));
       } else {
-        context.registerAction(key, 300, TutorialDropdown, {}, () => ({
+        context.registerAction(key, 400, TutorialDropdown, {}, () => ({
           groupName: key,
           videos: tutData[key],
         }));

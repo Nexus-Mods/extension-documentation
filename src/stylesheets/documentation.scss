@@ -16,6 +16,12 @@ $tut-video-height: 315;
   height: 100%;
  }
 
+// Temporary solution to the global margin issue when displaying
+//  items vertically.
+.tutorial-link svg {
+  margin-right: 0 !important;
+}
+
 .popover-title-container {
   display: flex;
   justify-content: space-between;
@@ -30,4 +36,29 @@ $tut-video-height: 315;
 
 .tutorial-button-instance { 
   width: $tut-video-width;
+}
+
+.tutorial-dropdown-title {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  width: 100%;
+  height: 70%;
+}
+
+// Temporary solution to the global margin issue when displaying
+//  items vertically.
+.tutorial-dropdown-title svg {
+  margin-right: 0% !important;
+}
+
+.tutorial-dropdown-group {
+  display: inline !important;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
 }
