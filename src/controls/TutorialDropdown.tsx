@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { DropdownButton } from 'react-bootstrap';
 import { translate } from 'react-i18next';
-import { connect } from 'react-redux';
-import { ComponentEx, tooltip } from 'vortex-api';
+import { ComponentEx, Icon } from 'vortex-api';
 import TutorialButton from './TutorialButton';
 
 import IYoutubeInfo from '../types/YoutubeInfo';
@@ -36,7 +35,7 @@ class TutorialDropdown extends ComponentEx<IProps, IComponentState> {
     let titleContent: JSX.Element;
     titleContent = (
       <div className='tutorial-dropdown-title'>
-        <tooltip.Icon name='video' buttonType='icon' tooltip={t('Tutorial videos')}/>
+        <Icon name='video'/>
         <div className='button-text'>{t('Tutorials')}</div>
       </div>
     );

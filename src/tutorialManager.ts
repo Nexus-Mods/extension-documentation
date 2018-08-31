@@ -34,7 +34,8 @@ const TUTORIAL_DATA = {
     createTutorialVideo(VIDEO_IDS.plugins, 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins, 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins, 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
+    // this part of the video is outdated, priorities have been replaced with groups
+    // createTutorialVideo(VIDEO_IDS.plugins, 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins, 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
   ],
   [ICONBAR_GROUPS.mods]: [

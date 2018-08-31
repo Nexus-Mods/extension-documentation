@@ -40,25 +40,26 @@ $tut-video-height: 315;
 
 .tutorial-dropdown-title {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  max-width: 100%;
-  width: 100%;
-  height: 70%;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
 }
 
 // Temporary solution to the global margin issue when displaying
 //  items vertically.
 .tutorial-dropdown-title svg {
-  margin-right: 0% !important;
+  margin-right: 0 !important;
 }
 
 .tutorial-dropdown-group {
-  display: inline !important;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  // not sure why this has to be row-reverse instead of row
+  flex-direction: row-reverse !important;
   height: 100%;
-  max-width: 100%;
+
+  div:first-child {
+  }
 }
