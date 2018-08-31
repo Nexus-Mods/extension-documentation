@@ -1,3 +1,8 @@
+export interface IVideoAttribution {
+  author: string;
+  link: string;
+}
+
 export interface IYoutubeInfo {
   // id to differentiate between different video instances
   id: number;
@@ -16,12 +21,17 @@ export interface IYoutubeInfo {
 
   // Used to associate this video tutorial to a specific icon group.
   group: string;
+
+  // attribution to the creator of the video
+  attribution: IVideoAttribution;
 }
 
 export let nextId = 0;
 
-export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number, group?: string) : IYoutubeInfo {
-  return { id: nextId++, ytId, name, start, end, group: group || 'Tutorials' };
+export function createTutorialVideo(ytId: string, name: string, start: string|number, end: string|number,
+                                    attribution: IVideoAttribution,
+                                    group?: string) : IYoutubeInfo {
+  return { id: nextId++, ytId, name, start, end, attribution, group: group || 'Tutorials' };
 }
 
 export default IYoutubeInfo;

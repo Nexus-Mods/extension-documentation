@@ -24,6 +24,13 @@ const VIDEO_IDS = {
   plugins: 'BQj8I5g4Qm4',
 };
 
+const ATTRIBUTIONS = {
+  gopher: {
+    author: 'Gopher',
+    link: 'https://www.gophersvids.com/',
+  }
+}
+
 /**
  * The documentation module uses the tutorial data map to populate the UI with tutorial buttons.
  *  - The keys must be set to a valid iconbar group names.
@@ -31,20 +38,20 @@ const VIDEO_IDS = {
  */
 const TUTORIAL_DATA = {
   [ICONBAR_GROUPS.plugins]: [
-    createTutorialVideo(VIDEO_IDS.plugins, 'Data files', '1.13', '3.36', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, 'Master files', '3.37', '6.36', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, 'Load Order', '6.37', '9.02', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Data files', '1.13', '3.36', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Master files', '3.37', '6.36', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Load Order', '6.37', '9.02', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
     // this part of the video is outdated, priorities have been replaced with groups
     // createTutorialVideo(VIDEO_IDS.plugins, 'Global priority', '9.53', '14.20', ICONBAR_GROUPS.plugins),
-    createTutorialVideo(VIDEO_IDS.plugins, 'Dependencies', '14.20', '20.00', ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins, 'Dependencies', '14.20', '20.00', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
   ],
   [ICONBAR_GROUPS.mods]: [
-    createTutorialVideo(VIDEO_IDS.installing, 'Nexus Links', '0.20', '1.02', ICONBAR_GROUPS.mods), 
-    createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ICONBAR_GROUPS.mods),
-    createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.installing, 'Nexus Links', '0.20', '1.02', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods), 
+    createTutorialVideo(VIDEO_IDS.installing, 'Install Mods', '1.02', '7.10', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
+    createTutorialVideo(VIDEO_IDS.fomods, 'Manage Mods', '0.24', '10.41', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
   ],
   [TODO_GROUP]: [
-    createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', TODO_GROUP),
+    createTutorialVideo(VIDEO_IDS.intro, 'Vortex Introduction', '2.05', '8.14', ATTRIBUTIONS.gopher, TODO_GROUP),
   ]
 }
 

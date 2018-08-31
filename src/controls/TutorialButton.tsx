@@ -1,4 +1,4 @@
-import { tooltip, ComponentEx, Overlay } from 'vortex-api';
+import { tooltip, ComponentEx, Overlay, Icon, util } from 'vortex-api';
 import { translate, TranslationFunction } from 'react-i18next';
 
 import { connect } from 'react-redux';
@@ -91,6 +91,9 @@ class TutorialButton extends ComponentEx<IProps, {}> {
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
         </div>
+        <div className='tutorial-footer'><a onClick={this.openLink}>
+          <Icon name='open-in-browser'/>{' '}{t('More videos by {{author}}', { replace: {author: video.attribution.author} })}</a>
+        </div>
       </Popover>
     );
 
@@ -144,6 +147,10 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </tooltip.IconButton>
       </div>
     )
+  }
+
+  private openLink = () => {
+    util.opn(this.props.video.attribution.link);
   }
 
   private getRef = () => {
