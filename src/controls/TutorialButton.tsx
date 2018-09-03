@@ -85,7 +85,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     );
 
     const popover = (
-      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle}>
+      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle} onClick={this.stopClickEvent}>
         <div>
           <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(video.ytId, video.start, video.end)} allowFullScreen />
           {children ? children.split('\n\n').map((paragraph) =>
@@ -123,6 +123,10 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </div>
       );
     }
+  }
+
+  private stopClickEvent = (e) => {
+    e.stopPropagation();
   }
 
   private renderTodo(): JSX.Element {
@@ -179,12 +183,10 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     }
   }
 
-  private hide = () => {
-    const { onClick, onShow, video } = this.props;
+  private hide = evt => {
+    const { onShow, video } = this.props;
+    evt.preventDefault();
     onShow(video.id, false);
-    // if (onClick) {
-    //   onClick(true);
-    // }
   }
 
   private getBounds = (): ClientRect => {
