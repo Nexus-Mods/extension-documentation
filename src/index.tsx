@@ -23,12 +23,12 @@ export default function init(context: types.IExtensionContext) {
     if (key === TODO_GROUP) {
       const element = tutData[key][0];
       // Add the tutorial video to the TODO dashlet.
-      context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Vortex Introduction', () => {
+      context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Introduction Video', () => {
         const { store } = context.api;
         store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)));
       }, undefined, (t) => (
         <TutorialButton video={element} />
-      ), undefined);
+      ), 5);
     } else {
       if (tutData[key].length === 1) {
         const element = tutData[key][0];
