@@ -50,7 +50,10 @@ export default function init(context: types.IExtensionContext) {
     // User has moved onto a different page; we can close any open tutorial
     //  videos.
     context.api.onStateChange(['session', 'base', 'mainPage'], () => {
-      context.api.store.dispatch(closeTutorials());
+      const { store } = context.api;
+      if (false !== util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)) {
+        store.dispatch(closeTutorials());
+      }
     });
   });
 
