@@ -92,7 +92,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
             <p key={video.id}>{paragraph}</p>) : null}
         </div>
         <div className='tutorial-footer'><a onClick={this.openLink}>
-          <Icon name='open-in-browser'/>{' '}{t('More videos by {{author}}', { replace: {author: video.attribution.author} })}</a>
+          <Icon name='open-in-browser'/>{' '}{t('More Videos by {{author}}', { replace: {author: video.attribution.author} })}</a>
         </div>
       </Popover>
     );
