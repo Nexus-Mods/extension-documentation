@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
-const VORTEX_DOCUMENTS_URL = 'https://help.nexusmods.com/category/46-vortex';
+const VORTEX_DOCUMENTS_URL = 'https://wiki.nexusmods.com/index.php/Category:Vortex';
 
 interface IComponentState {
   loading: boolean;

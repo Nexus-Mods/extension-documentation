@@ -3,9 +3,6 @@
  * into an injectable CSS string; to be used with Electron's Webviews.
  */
 
-const BACKGROUND_RULE = 'brand-bg';
-const LUMINANCE_THRESHOLD = 120;
-
 export class ThemeToCSS {
   public static getCSSInjectString( rules: CSSStyleRule[] ) : string { 
     const variables = this.transformRules(rules);
@@ -13,20 +10,29 @@ export class ThemeToCSS {
     return ( `html, body { background: transparent !important; }
     
     #fullArticle div, h1, h2, h3, h4, h5, p, td, li, strong { color: ${variables['text-color']} !important; }
-    
-    header { display: none !important; }
+    #column-one, .portlet { display: none; }
 
-    a { color: ${variables['link-color']} !important; }
-    
-    .category-list a:hover, #docsSearch, .related, .contentWrapper { background-color: ${variables['brand-menu']} !important;
-    border-top-color: ${variables['border-color']} !important;
-    border-bottom-color: ${variables['border-color']} !important;
-    border-right-color: ${variables['border-color']} !important;
-    border-left-color: ${variables['border-color']} !important; }
+    #content { 
+      width: 80% !important; 
+      border: none !important; 
+    }
 
-    footer { pointer-events: none; }
+    #content a { color: ${variables['link-color']}; }
 
-    footer a { color: ${variables['text-color']} !important }`);
+    .external.text { 
+      color: ${variables['text-color']} !important; 
+      pointer-events: none !important;
+      background: none !important;
+      background-color: none !important;
+      padding-right: 0 !important;
+    }
+
+    .noarticletext p a, .catlinks a { 
+      pointer-events: none; 
+      color: ${variables['text-color']} !important; 
+    }
+
+    #footer { display: none; }`);
   }
 
   private static transformRules(rules: CSSStyleRule[]): { [id: string]: any } {
@@ -36,10 +42,5 @@ export class ThemeToCSS {
         const [id, type, key] = rule.selectorText.split(' ');
         prev[key.slice(1)] = rule.style[type.slice(1)];
         return prev;
-      }, {});
-  }
+      }, {});  }
 }
-
-
-
-
