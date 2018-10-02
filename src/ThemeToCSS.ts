@@ -7,14 +7,14 @@ export class ThemeToCSS {
   public static getCSSInjectString( rules: CSSStyleRule[] ) : string { 
     const variables = this.transformRules(rules);
     // String containing the css code we want to inject into the webview object
-    return ( `html, body { background: transparent !important; }
+    return ( `html, body, #content, #mw-pages > table { background: transparent !important; }
     
     #fullArticle div, h1, h2, h3, h4, h5, p, td, li, strong { color: ${variables['text-color']} !important; }
     #column-one, .portlet { display: none; }
 
     #content { 
-      width: 80% !important; 
-      border: none !important; 
+      margin: 0 !important;
+      border: none !important;
     }
 
     #content a { color: ${variables['link-color']}; }
@@ -32,7 +32,14 @@ export class ThemeToCSS {
       color: ${variables['text-color']} !important; 
     }
 
-    #footer { display: none; }`);
+    #firstHeading { display: none; }
+
+    #footer { display: none; }
+    
+    pre {
+      overflow: auto;
+    }
+    `);
   }
 
   private static transformRules(rules: CSSStyleRule[]): { [id: string]: any } {

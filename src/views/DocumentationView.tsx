@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';  
 import { ComponentEx, tooltip, Spinner, Webview, MainPage, FlexLayout } from 'vortex-api';
 import { translate } from 'react-i18next';
@@ -57,6 +58,8 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const { t } = this.props;
     const { display, loading, history, historyIdx, url } = this.state;
 
+    const PanelX: any = Panel;
+
     return (
       <MainPage>
         <MainPage.Header>
@@ -80,12 +83,16 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
         <MainPage.Body>
           <FlexLayout type='column' className='documentation'>
             {loading ? this.renderWait() : null}
-            <Webview
-              style={{ visibility: display != false ? 'visible': 'hidden', width: '100%', height: '100%'}}
-              src={url}
-              onLoading={this.onLoading}
-              ref={this.setRef}
-            />
+            <Panel>
+              <PanelX.Body>
+                <Webview
+                  style={{ visibility: display != false ? 'visible': 'hidden', width: '100%', height: '100%'}}
+                  src={url}
+                  onLoading={this.onLoading}
+                  ref={this.setRef}
+                />
+              </PanelX.Body>
+            </Panel>
           </FlexLayout>
         </MainPage.Body>
       </MainPage>
