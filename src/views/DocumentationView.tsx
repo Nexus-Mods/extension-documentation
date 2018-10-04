@@ -11,7 +11,6 @@ const VORTEX_DOCUMENTS_URL = 'https://wiki.nexusmods.com/index.php/Category:Vort
 
 interface IComponentState {
   loading: boolean;
-  display: boolean;
   url: string;
   history: string[];
   historyIdx: number;
@@ -32,7 +31,6 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     super(props);
     this.initState({
       loading: false,
-      display: false,
       url: VORTEX_DOCUMENTS_URL,
       history: [VORTEX_DOCUMENTS_URL],
       historyIdx: 0,
@@ -56,7 +54,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   public render(): JSX.Element {
     const { t } = this.props;
-    const { display, loading, history, historyIdx, url } = this.state;
+    const { loading, history, historyIdx, url } = this.state;
 
     const PanelX: any = Panel;
 
@@ -82,11 +80,11 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
         </MainPage.Header>
         <MainPage.Body>
           <FlexLayout type='column' className='documentation'>
-            {loading ? this.renderWait() : null}
             <Panel>
               <PanelX.Body>
+                {loading ? this.renderWait() : null}
                 <Webview
-                  style={{ visibility: display != false ? 'visible': 'hidden', width: '100%', height: '100%'}}
+                  style={{ visibility: loading ? 'hidden' : 'visible', width: '100%', height: loading ? 0 : '100%'}}
                   src={url}
                   onLoading={this.onLoading}
                   ref={this.setRef}
@@ -100,22 +98,19 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   }
 
   private onLoading = (loading: boolean) => {
-    this.nextState.display = !(this.nextState.loading = loading);
+    this.nextState.loading = loading;
   }
 
   private renderWait() {
     return (
-      <Spinner
-        style={{
-          width: '64px',
-          height: '64px',
-          position: 'absolute',
-          top: 'auto',
-          bottom: 'auto',
-          left: 'auto',
-          right: 'auto',
-        }}
-      />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <Spinner
+          style={{
+            width: '64px',
+            height: '64px',
+          }}
+        />
+      </div>
     );
   }
 
