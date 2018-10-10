@@ -154,7 +154,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
   }
 
   private openLink = () => {
-    util.opn(this.props.video.attribution.link);
+    util.opn(this.props.video.attribution.link).catch(err => null);
   }
 
   private getRef = () => {
