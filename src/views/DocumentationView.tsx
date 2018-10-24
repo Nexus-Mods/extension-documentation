@@ -69,6 +69,12 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
               tooltip={t('Back')}
             />
             <tooltip.IconButton
+              icon='highlight-home'
+              onClick={this.navHome}
+              disabled={url === VORTEX_DOCUMENTS_URL}
+              tooltip={t('Home')}
+            />
+            <tooltip.IconButton
               icon='nav-forward'
               onClick={this.navForward}
               disabled={historyIdx === history.length - 1}
@@ -119,6 +125,13 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const newPos = Math.max(0, historyIdx - 1);
     this.nextState.historyIdx = newPos;
     this.nextState.url = history[newPos];
+  }
+
+  private navHome = () => {
+    const { history, historyIdx } = this.state;
+    const newPos = Math.min(history.length - 1, historyIdx + 1);
+    this.nextState.historyIdx = newPos;
+    this.nextState.url = VORTEX_DOCUMENTS_URL;
   }
 
   private navForward = () => {

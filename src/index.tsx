@@ -9,7 +9,7 @@ import TutorialDropdown from './controls/TutorialDropdown';
 import { setTutorialOpen, closeTutorials } from './actions/session';
 
 export default function init(context: types.IExtensionContext) {
-  context.registerMainPage('details', 'Support', DocumentationView, {
+  context.registerMainPage('details', 'Knowledge Base', DocumentationView, {
     hotkeyRaw: 'F1',
     group: 'global',
   } as any);
