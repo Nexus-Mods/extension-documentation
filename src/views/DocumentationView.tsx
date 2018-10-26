@@ -16,16 +16,13 @@ interface IComponentState {
   historyIdx: number;
 }
 
-interface IConnectedProps {
-  url: string;
-}
-
-type IProps = IConnectedProps;
+interface IProps {}
 
 class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private mRef: Webview = null;
   private mWebView: Element;
   private mCallbacks: { [event: string]: () => void };
+  private mMounted: boolean;
 
   constructor(props: IProps) {
     super(props);
@@ -50,6 +47,16 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
         (this.mWebView as any).insertCSS(cssString);
       },
     };
+  }
+
+  public componentDidMount() {
+    this.mMounted = true;
+    this.context.api.events.on('navigate-knowledgebase', this.navigate);
+  }
+
+  public componentWillUnmount() {
+    this.context.api.events.removeListener('navigate-knowledgebase', this.navigate);
+    this.mMounted = false;
   }
 
   public render(): JSX.Element {
@@ -105,6 +112,13 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   private onLoading = (loading: boolean) => {
     this.nextState.loading = loading;
+  }
+
+  private navigate = (url: string) => {
+    if (this.mMounted) {
+      (this.mWebView as any).stop();
+      this.nextState.url = url;
+    }
   }
 
   private renderWait() {

@@ -8,6 +8,29 @@ import TutorialButton from './controls/TutorialButton';
 import TutorialDropdown from './controls/TutorialDropdown';
 import { setTutorialOpen, closeTutorials } from './actions/session';
 
+const WIKI_TOPICS = {
+  'adding-games': 'Adding_a_new_game_to_Vortex',
+  'creating-themes': 'Creating_themes_for_Vortex',
+  'deployment-methods': 'Deployment_Methods',
+  'downloading': 'Downloading_from_Nexus_Mods_with_Vortex',
+  'external-changes': 'External_Changes',
+  'keyboard-shortcuts': 'Keyboard_Shortcuts',
+  'file-conflicts': 'Managing_File_Conflicts',
+  'load-order-about': 'About_Load_Orders',
+  'load-order': 'Managing_your_Load_Order',
+  'profiles': 'Setting_up_profiles_in_Vortex',
+};
+
+const WIKI_URL = 'https://wiki.nexusmods.com/index.php';
+
+function generateUrl(wikiId: string) {
+  const topicId = WIKI_TOPICS[wikiId] || undefined;
+  if (topicId === undefined) {
+    return undefined;
+  }
+  return `${WIKI_URL}/${topicId}`;
+}
+
 export default function init(context: types.IExtensionContext) {
   context.registerMainPage('details', 'Knowledge Base', DocumentationView, {
     hotkeyRaw: 'F1',
@@ -53,6 +76,16 @@ export default function init(context: types.IExtensionContext) {
       const { store } = context.api;
       if (false !== util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)) {
         store.dispatch(closeTutorials());
+      }
+    });
+
+    context.api.events.on('open-knowledge-base', (wikiId: string) => {
+      context.api.events.emit('show-main-page', 'Knowledge Base');
+      const url = generateUrl(wikiId);
+      if (url !== undefined) {
+        setTimeout(() => {
+          context.api.events.emit('navigate-knowledgebase', url);
+        }, 2000);
       }
     });
   });
