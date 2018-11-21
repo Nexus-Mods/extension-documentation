@@ -11,7 +11,7 @@ export class ThemeToCSS {
     
     #fullArticle div, h1, h2, h3, h4, h5, p, td, li, strong { color: ${variables['text-color']} !important; }
 
-    .collapsible-nav, #mw-indicator, #mw-head, .noprint, .mw-helplink, .catlinks, #footer, #column-one, .portlet { 
+    .collapsible-nav, #mw-indicator, #mw-panel, #mw-head, .noprint, .mw-helplink, .catlinks, #footer, #column-one, .portlet { 
       display: none !important; 
     }
 
