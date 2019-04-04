@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { DropdownButton } from 'react-bootstrap';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { ComponentEx, Icon } from 'vortex-api';
 import TutorialButton from './TutorialButton';
 
@@ -59,4 +59,4 @@ class TutorialDropdown extends ComponentEx<IProps, IComponentState> {
   }
 }
 
-export default translate(['common'])(TutorialDropdown) as React.ComponentClass<{}>;
+export default withTranslation(['common'])(TutorialDropdown as any) as React.ComponentClass<{}>;

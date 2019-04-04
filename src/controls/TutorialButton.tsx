@@ -1,6 +1,7 @@
 import { tooltip, ComponentEx, Overlay, Icon, util } from 'vortex-api';
-import { translate, TranslationFunction } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
+import { TranslationFunction } from 'i18next';
 import { connect } from 'react-redux';
 import * as React from 'react';
 import { Popover } from 'react-bootstrap';
@@ -216,5 +217,6 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>): IActionProps {
   };
 }
 
-export default translate(['common'])(
-  connect(mapStateToProps, mapDispatchToProps)(TutorialButton)) as React.ComponentClass<IBaseProps>;
+export default withTranslation(['common'])(
+  connect(mapStateToProps, mapDispatchToProps)(
+    TutorialButton) as any) as React.ComponentClass<IBaseProps>;

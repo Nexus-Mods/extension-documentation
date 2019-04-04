@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';  
 import { ComponentEx, tooltip, Spinner, Webview, MainPage, FlexLayout } from 'vortex-api';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
@@ -180,4 +180,4 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 }
 
 export default 
-  translate(['common'])(DocumentationView);
+  withTranslation(['common'])(DocumentationView as any) as React.ComponentClass<{}>;
