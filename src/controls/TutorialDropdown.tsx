@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { DropdownButton } from 'react-bootstrap';
+import * as ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
 import { ComponentEx, Icon } from 'vortex-api';
 import TutorialButton from './TutorialButton';
@@ -24,8 +24,8 @@ class TutorialDropdown extends ComponentEx<IProps, IComponentState> {
   constructor(props: IProps) {
     super(props);
     this.initState({
-      show: false
-    })
+      show: false,
+    });
   }
 
   public render(): JSX.Element {
@@ -41,8 +41,24 @@ class TutorialDropdown extends ComponentEx<IProps, IComponentState> {
     );
 
     return (
-      <DropdownButton onToggle={this.onToggle} open={show} ref={this.setRef} className='tutorial-dropdown-group' title={titleContent} id={'tutorial-dropdown' + groupName}>
-        {videos.map((video) => <TutorialButton onClick={this.onToggle} container={this.mRef} key={video.group + video.id} dropdown video={video} />)}
+      <DropdownButton
+        onToggle={this.onToggle}
+        open={show}
+        ref={this.setRef}
+        className='tutorial-dropdown-group'
+        title={titleContent}
+        id={'tutorial-dropdown' + groupName}
+      >
+        {
+          videos.map((video) =>
+          <TutorialButton
+            onClick={this.onToggle}
+            container={this.mRef}
+            key={video.group + video.id}
+            dropdown
+            video={video}
+          />)
+        }
       </DropdownButton>
     );
   }

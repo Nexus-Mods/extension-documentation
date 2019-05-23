@@ -1,16 +1,16 @@
-import { tooltip, ComponentEx, Overlay, Icon, util } from 'vortex-api';
-import { withTranslation } from 'react-i18next';
-
 import { TranslationFunction } from 'i18next';
-import { connect } from 'react-redux';
 import * as React from 'react';
 import { Popover } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import * as Redux from 'redux';
 
-import getEmbedLink from '../tutorialManager'
-import { IYoutubeInfo } from '../types/YoutubeInfo';
 import { setTutorialOpen } from '../actions/session';
+import getEmbedLink from '../tutorialManager';
+import { IYoutubeInfo } from '../types/YoutubeInfo';
+
+import { ComponentEx, Icon, Overlay, tooltip, util } from 'vortex-api';
 
 export const VIDEO_WIDTH = 560;
 export const VIDEO_HEIGHT = 315;
@@ -28,8 +28,8 @@ export interface IBaseProps {
 }
 
 interface IConnectedProps {
-  tutorialId: number,
-  isOpen: boolean,
+  tutorialId: number;
+  isOpen: boolean;
 }
 
 interface IActionProps {
@@ -41,13 +41,13 @@ type IProps = IBaseProps & IConnectedProps & IActionProps;
 /**
  * Component will appear as a single video icon within iconBars which users can click and view
  *  tutorial videos relevant to the section they're on.
- * 
+ *
  * A Dropdown button will be created when multiple tutorial videos are linked to the same icon
  *  bar.
- * 
- * Todo items are supported as well but will not provide a button or button text when rendered; 
- *  these must be provided upon calling the registerTodo extension function. 
- * 
+ *
+ * Todo items are supported as well but will not provide a button or button text when rendered;
+ *  these must be provided upon calling the registerTodo extension function.
+ *
  * double-linebreaks can be used in the text to start a new paragraph.
  *
  * @param {IProps} props
@@ -81,19 +81,33 @@ class TutorialButton extends ComponentEx<IProps, {}> {
           icon='close-slim'
           tooltip={t('Dismiss')}
           className='btn-embed btn-dismiss'
-          onClick={this.hide}/>
+          onClick={this.hide}
+        />
       </div>
     );
 
     const popover = (
-      <Popover id={`popover-${video.group}-${video.id}`} className='tutorial-popover' title={popOverTitle} onClick={this.stopClickEvent}>
+      <Popover
+        id={`popover-${video.group}-${video.id}`}
+        className='tutorial-popover'
+        title={popOverTitle}
+        onClick={this.stopClickEvent}
+      >
         <div>
-          <iframe width={VIDEO_WIDTH} height={VIDEO_HEIGHT} src={getEmbedLink(video.ytId, video.start, video.end)} allowFullScreen />
+          <iframe
+            width={VIDEO_WIDTH}
+            height={VIDEO_HEIGHT}
+            src={getEmbedLink(video.ytId, video.start, video.end)}
+            allowFullScreen
+          />
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
         </div>
-        <div className='tutorial-footer'><a onClick={this.openLink}>
-          <Icon name='open-in-browser'/>{' '}{t('More Videos by {{author}}', { replace: {author: video.attribution.author} })}</a>
+        <div className='tutorial-footer'>
+          <a onClick={this.openLink}>
+            <Icon name='open-in-browser'/>
+            {' '}{t('More Videos by {{author}}', { replace: {author: video.attribution.author} })}
+          </a>
         </div>
       </Popover>
     );
@@ -104,7 +118,8 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         onHide={this.hide}
         orientation={orientation === 'horizontal' ? 'horizontal' : 'vertical'}
         target={this.getRef}
-        getBounds={this.getBounds}>
+        getBounds={this.getBounds}
+      >
         {popover}
       </Overlay>
     );
@@ -115,7 +130,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
           {overlay}
           {iconButton}
         </li>
-      )
+      );
     } else {
       return (
         <div className='tutorial-button-instance'>
@@ -138,10 +153,15 @@ class TutorialButton extends ComponentEx<IProps, {}> {
 
   private renderDropdownButton(t: TranslationFunction, name: string): JSX.Element {
     const { container } = this.props;
-    
     return (
-      <a ref={container !== undefined ? null : this.setRef} onClick={this.show} role='menuitem'>{t(name)}</a>
-    )
+      <a
+        ref={container !== undefined ? null : this.setRef}
+        onClick={this.show}
+        role='menuitem'
+      >
+        {t(name)}
+      </a>
+    );
   }
 
   private renderButton(t: TranslationFunction, name: string): JSX.Element {
@@ -151,7 +171,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
           <div className='button-text'>{t(name)}</div>
         </tooltip.IconButton>
       </div>
-    )
+    );
   }
 
   private openLink = () => {
@@ -165,7 +185,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     }
 
     return this.mRef;
-  } 
+  }
 
   private setRef = ref => {
     this.mRef = ref;

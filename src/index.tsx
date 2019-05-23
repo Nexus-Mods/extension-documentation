@@ -1,12 +1,14 @@
-import DocumentationView from './views/DocumentationView';
 import * as path from 'path';
 import * as React from 'react';
-import { types, util } from 'vortex-api';
-import sessionReducer from './reducers/session';
-import { getTutorialData, TODO_GROUP } from './tutorialManager';
+
+import { closeTutorials, setTutorialOpen } from './actions/session';
 import TutorialButton from './controls/TutorialButton';
 import TutorialDropdown from './controls/TutorialDropdown';
-import { setTutorialOpen, closeTutorials } from './actions/session';
+import sessionReducer from './reducers/session';
+import { getTutorialData, TODO_GROUP } from './tutorialManager';
+import DocumentationView from './views/DocumentationView';
+
+import { types, util } from 'vortex-api';
 
 const WIKI_TOPICS = {
   'adding-games': 'Adding_a_new_game_to_Vortex',
@@ -45,9 +47,12 @@ export default function init(context: types.IExtensionContext) {
     if (key === TODO_GROUP) {
       const element = tutData[key][0];
       // Add the tutorial video to the TODO dashlet.
-      context.registerToDo('todo-tutorial-vid', 'more', undefined, 'video', 'Introduction Video', () => {
+      context.registerToDo('todo-tutorial-vid',
+        'more', undefined, 'video', 'Introduction Video', () => {
         const { store } = context.api;
-        store.dispatch(setTutorialOpen(element.id, !util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)));
+        store.dispatch(setTutorialOpen(element.id,
+          !util.getSafe(store.getState(),
+          ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)));
       }, undefined, (t) => (
         <TutorialButton video={element} />
       ), 5);
@@ -56,7 +61,7 @@ export default function init(context: types.IExtensionContext) {
         const element = tutData[key][0];
         // Add the tutorial item to the relevant icon group.
         context.registerAction(key, 400, TutorialButton, {}, () => ({
-          video: element
+          video: element,
         }));
       } else {
         context.registerAction(key, 400, TutorialDropdown, {}, () => ({
@@ -74,7 +79,8 @@ export default function init(context: types.IExtensionContext) {
     //  videos.
     context.api.onStateChange(['session', 'base', 'mainPage'], () => {
       const { store } = context.api;
-      if (false !== util.getSafe(store.getState(), ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)) {
+      if (false !== util.getSafe(store.getState(),
+        ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)) {
         store.dispatch(closeTutorials());
       }
     });
@@ -91,4 +97,4 @@ export default function init(context: types.IExtensionContext) {
   });
 
   return true;
-};
+}
