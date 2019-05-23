@@ -21,7 +21,7 @@ const VIDEO_IDS = {
   intro: 'sD9xKao_u30',
   installing: 'OrZM9LSuDhU',
   fomods: 'dWcHiamHhCA',
-  plugins: 'BQj8I5g4Qm4',
+  plugins: 'BRo8I32ASSw',
   conflicts: 'eSkurhkPSyw',
 };
 
@@ -40,23 +40,21 @@ const ATTRIBUTIONS = {
 const TUTORIAL_DATA = {
   [ICONBAR_GROUPS.plugins]: [
     createTutorialVideo(VIDEO_IDS.plugins,
-      'Data files', '1.13', '3.36', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+      'Data files', '1.13', '3.35', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins,
-      'Master files', '3.37', '6.36', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+      'Master files', '3.36', '6.36', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins,
-      'Load Order', '6.37', '9.02', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
-    // this part of the video is outdated, priorities have been replaced with groups
+      'Load Order', '6.37', '9.52', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins,
-      'Dependencies', '14.20', '20.00', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+      'LOOT Groups', '9.53', '17.20', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+    createTutorialVideo(VIDEO_IDS.plugins,
+      'Dependencies', '17.20', '20.20', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
   ],
   [ICONBAR_GROUPS.mods]: [
     createTutorialVideo(VIDEO_IDS.installing,
-      'Nexus Links', '0.20', '1.02', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
-    createTutorialVideo(VIDEO_IDS.installing,
       'Install Mods', '1.02', '7.10', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
     createTutorialVideo(VIDEO_IDS.fomods,
-      'Manage Mods', '0.24', '10.41', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
-
+      'Scripted Installers', '0.25', '10.41', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
     createTutorialVideo(VIDEO_IDS.conflicts,
       'Resolving Conflicts', '1.36', '11.40', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
   ],
@@ -95,7 +93,7 @@ function getEmbedLink(id: string, start: string | number, end: string | number):
     endSeconds = 0;
   }
 
-  return srcLink + id + '?autoplay=1&start=' + startSeconds + '&end=' + endSeconds;
+  return srcLink + id + '?start=' + startSeconds + '&end=' + endSeconds + ';autoplay=1';
 }
 
 /**
