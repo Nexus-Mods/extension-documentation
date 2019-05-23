@@ -48,7 +48,7 @@ const TUTORIAL_DATA = {
     createTutorialVideo(VIDEO_IDS.plugins,
       'LOOT Groups', '9.53', '17.20', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
     createTutorialVideo(VIDEO_IDS.plugins,
-      'Dependencies', '17.20', '20.20', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
+      'Dependencies', '17.20', '19.28', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.plugins),
   ],
   [ICONBAR_GROUPS.mods]: [
     createTutorialVideo(VIDEO_IDS.installing,
