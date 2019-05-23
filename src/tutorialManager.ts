@@ -22,6 +22,7 @@ const VIDEO_IDS = {
   installing: 'OrZM9LSuDhU',
   fomods: 'dWcHiamHhCA',
   plugins: 'BQj8I5g4Qm4',
+  conflicts: 'eSkurhkPSyw',
 };
 
 const ATTRIBUTIONS = {
@@ -55,6 +56,9 @@ const TUTORIAL_DATA = {
       'Install Mods', '1.02', '7.10', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
     createTutorialVideo(VIDEO_IDS.fomods,
       'Manage Mods', '0.24', '10.41', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
+
+    createTutorialVideo(VIDEO_IDS.conflicts,
+      'Resolving Conflicts', '1.36', '11.40', ATTRIBUTIONS.gopher, ICONBAR_GROUPS.mods),
   ],
   [TODO_GROUP]: [
     createTutorialVideo(VIDEO_IDS.intro,
