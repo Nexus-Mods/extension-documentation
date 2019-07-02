@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
-import * as ReactDOM from 'react-dom';  
-import { ComponentEx, tooltip, Spinner, Webview, MainPage, FlexLayout } from 'vortex-api';
+import * as ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
+import { ComponentEx, FlexLayout, MainPage, Spinner, tooltip, Webview } from 'vortex-api';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
@@ -179,5 +179,5 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   }
 }
 
-export default 
+export default
   withTranslation(['common'])(DocumentationView as any) as React.ComponentClass<{}>;
