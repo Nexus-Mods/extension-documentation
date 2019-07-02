@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
-import { ComponentEx, FlexLayout, MainPage, Spinner, tooltip, Webview } from 'vortex-api';
+import { ComponentEx, FlexLayout, MainPage, Spinner, tooltip, util, Webview } from 'vortex-api';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
@@ -88,8 +88,16 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
               tooltip={t('Forward')}
             />
           </div>
-
           <div className='flex-fill' />
+          <div className='header-navigation-right'>
+            <tooltip.IconButton
+              icon='open-in-browser'
+              onClick={this.openBrowser}
+              disabled={url === undefined}
+              tooltip={t('Open in Browser')}
+            />
+          </div>
+
         </MainPage.Header>
         <MainPage.Body>
           <FlexLayout type='column' className='documentation'>
@@ -153,6 +161,11 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const newPos = Math.min(history.length - 1, historyIdx + 1);
     this.nextState.historyIdx = newPos;
     this.nextState.url = history[newPos];
+  }
+
+  private openBrowser = () => {
+    const { url } = this.state;
+    util.opn(url).catch(err => null);
   }
 
   private setRef = ref => {
