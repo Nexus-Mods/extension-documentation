@@ -1,9 +1,10 @@
+import { WebviewTag } from 'electron';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
-import { ComponentEx, FlexLayout, MainPage, Spinner, tooltip, util, Webview } from 'vortex-api';
+import { ComponentEx, FlexLayout, log, MainPage, Spinner, tooltip, util, Webview } from 'vortex-api';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
@@ -11,7 +12,6 @@ const VORTEX_DOCUMENTS_URL = 'https://wiki.nexusmods.com/index.php/Category:Vort
 
 interface IComponentState {
   loading: boolean;
-  url: string;
   history: string[];
   historyIdx: number;
 }
@@ -20,23 +20,21 @@ interface IProps {}
 
 class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private mRef: Webview = null;
-  private mWebView: Element;
-  private mCallbacks: { [event: string]: () => void };
+  private mWebView: WebviewTag;
+  private mCallbacks: { [event: string]: (...args: any[]) => void };
   private mMounted: boolean;
 
   constructor(props: IProps) {
     super(props);
     this.initState({
       loading: false,
-      url: VORTEX_DOCUMENTS_URL,
       history: [VORTEX_DOCUMENTS_URL],
       historyIdx: 0,
     });
 
     this.mCallbacks = {
       'did-finish-load': () => {
-        const newUrl: string = (this.mWebView as any).getURL();
-        this.nextState.url = newUrl;
+        const newUrl: string = this.mWebView.getURL();
 
         if (newUrl !== this.nextState.history[this.nextState.historyIdx]) {
           this.nextState.history.splice(this.nextState.historyIdx + 1, 9999, newUrl);
@@ -44,7 +42,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
         }
 
         const cssString = ThemeToCSS.getCSSInjectString(this.getThemeSheet());
-        (this.mWebView as any).insertCSS(cssString);
+        this.mWebView.insertCSS(cssString);
       },
     };
   }
@@ -61,7 +59,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   public render(): JSX.Element {
     const { t } = this.props;
-    const { loading, history, historyIdx, url } = this.state;
+    const { loading, history, historyIdx } = this.state;
 
     const PanelX: any = Panel;
 
@@ -78,7 +76,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
             <tooltip.IconButton
               icon='highlight-home'
               onClick={this.navHome}
-              disabled={url === VORTEX_DOCUMENTS_URL}
+              disabled={historyIdx === 0}
               tooltip={t('Home')}
             />
             <tooltip.IconButton
@@ -93,7 +91,6 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
             <tooltip.IconButton
               icon='open-in-browser'
               onClick={this.openBrowser}
-              disabled={url === undefined}
               tooltip={t('Open in Browser')}
             />
           </div>
@@ -106,7 +103,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
                 {loading ? this.renderWait() : null}
                 <Webview
                   style={{ visibility: loading ? 'hidden' : 'visible', width: '100%', height: loading ? 0 : '100%'}}
-                  src={url}
+                  src={VORTEX_DOCUMENTS_URL}
                   onLoading={this.onLoading}
                   ref={this.setRef}
                 />
@@ -124,8 +121,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   private navigate = (url: string) => {
     if (this.mMounted) {
-      (this.mWebView as any).stop();
-      this.nextState.url = url;
+      this.mWebView.stop();
     }
   }
 
@@ -146,32 +142,32 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const { history, historyIdx } = this.state;
     const newPos = Math.max(0, historyIdx - 1);
     this.nextState.historyIdx = newPos;
-    this.nextState.url = history[newPos];
+    this.mWebView.loadURL(history[newPos]);
   }
 
   private navHome = () => {
     const { history, historyIdx } = this.state;
     const newPos = Math.min(history.length - 1, historyIdx + 1);
     this.nextState.historyIdx = newPos;
-    this.nextState.url = VORTEX_DOCUMENTS_URL;
+    this.mWebView.loadURL(VORTEX_DOCUMENTS_URL);
   }
 
   private navForward = () => {
     const { history, historyIdx } = this.state;
     const newPos = Math.min(history.length - 1, historyIdx + 1);
     this.nextState.historyIdx = newPos;
-    this.nextState.url = history[newPos];
+    this.mWebView.loadURL(history[newPos]);
   }
 
   private openBrowser = () => {
-    const { url } = this.state;
-    util.opn(url).catch(err => null);
+    const { history, historyIdx } = this.state;
+    util.opn(history[historyIdx]).catch(err => null);
   }
 
   private setRef = ref => {
     this.mRef = ref;
     if (ref !== null) {
-      this.mWebView = ReactDOM.findDOMNode(this.mRef) as Element;
+      this.mWebView = ReactDOM.findDOMNode(this.mRef) as WebviewTag;
       Object.keys(this.mCallbacks).forEach(event => {
         this.mWebView.addEventListener(event, this.mCallbacks[event]);
       });
