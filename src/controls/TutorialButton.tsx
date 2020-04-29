@@ -10,7 +10,7 @@ import { setTutorialOpen } from '../actions/session';
 import getEmbedLink from '../tutorialManager';
 import { IYoutubeInfo } from '../types/YoutubeInfo';
 
-import { ComponentEx, Icon, Overlay, tooltip, util } from 'vortex-api';
+import { ComponentEx, Icon, Overlay, tooltip, util, Webview } from 'vortex-api';
 
 export const VIDEO_WIDTH = 560;
 export const VIDEO_HEIGHT = 315;
@@ -53,11 +53,20 @@ type IProps = IBaseProps & IConnectedProps & IActionProps;
  * @param {IProps} props
  * @returns
  */
-class TutorialButton extends ComponentEx<IProps, {}> {
+class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
   private mRef: Element;
+
+  constructor(props: IProps) {
+    super(props);
+
+    this.initState({
+      fullscreen: false,
+    });
+  }
 
   public render(): JSX.Element {
     const { dropdown, children, video, t, tutorialId, orientation, isOpen } = this.props;
+    const { fullscreen } = this.state;
 
     if (video === undefined) {
       return null;
@@ -89,16 +98,18 @@ class TutorialButton extends ComponentEx<IProps, {}> {
     const popover = (
       <Popover
         id={`popover-${video.group}-${video.id}`}
-        className='tutorial-popover'
+        className={`tutorial-popover ${fullscreen ? 'tutorial-popover-fullscreen' : ''}`}
         title={popOverTitle}
         onClick={this.stopClickEvent}
       >
         <div>
-          <iframe
-            width={VIDEO_WIDTH}
-            height={VIDEO_HEIGHT}
+          <Webview
+            style={{width: VIDEO_WIDTH, height: VIDEO_HEIGHT}}
             src={getEmbedLink(video.ytId, video.start, video.end)}
             allowFullScreen
+            onNewWindow={this.onNewWindow}
+            onFullscreen={this.onFullscreen}
+            ref={this.setRef}
           />
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
@@ -139,6 +150,14 @@ class TutorialButton extends ComponentEx<IProps, {}> {
         </div>
       );
     }
+  }
+
+  private onFullscreen = (fullscreen: boolean) => {
+    this.nextState.fullscreen = fullscreen;
+  }
+
+  private onNewWindow = (url: string) => {
+    util.opn(url).catch(() => null);
   }
 
   private stopClickEvent = (e) => {

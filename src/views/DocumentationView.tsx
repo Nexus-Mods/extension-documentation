@@ -61,8 +61,6 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const { t } = this.props;
     const { loading, history, historyIdx } = this.state;
 
-    const PanelX: any = Panel;
-
     return (
       <MainPage>
         <MainPage.Header>
@@ -99,7 +97,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
         <MainPage.Body>
           <FlexLayout type='column' className='documentation'>
             <Panel>
-              <PanelX.Body>
+              <Panel.Body>
                 {loading ? this.renderWait() : null}
                 <Webview
                   style={{ visibility: loading ? 'hidden' : 'visible', width: '100%', height: loading ? 0 : '100%'}}
@@ -107,12 +105,12 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
                   onLoading={this.onLoading}
                   ref={this.setRef}
                 />
-              </PanelX.Body>
+              </Panel.Body>
             </Panel>
           </FlexLayout>
         </MainPage.Body>
       </MainPage>
-    )
+    );
   }
 
   private onLoading = (loading: boolean) => {

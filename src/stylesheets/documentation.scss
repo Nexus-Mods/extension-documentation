@@ -34,6 +34,23 @@ $tut-video-height: 315;
 
 .tutorial-popover { max-width: 100%; }
 
+.tutorial-popover-fullscreen {
+  position: absolute;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-top: 0 !important;
+
+  webview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+}
+
 .tutorial-button-instance { 
   width: $tut-video-width;
 }
