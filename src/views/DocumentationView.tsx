@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
-import { ComponentEx, FlexLayout, log, MainPage, Spinner, tooltip, util, Webview } from 'vortex-api';
+import { ComponentEx, FlexLayout, log, MainPage,
+         Spinner, tooltip, util, Webview } from 'vortex-api';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
@@ -100,7 +101,11 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
               <Panel.Body>
                 {loading ? this.renderWait() : null}
                 <Webview
-                  style={{ visibility: loading ? 'hidden' : 'visible', width: '100%', height: loading ? 0 : '100%'}}
+                  style={{
+                    visibility: loading ? 'hidden' : 'visible',
+                    width: '100%',
+                    height: loading ? 0 : '100%',
+                  }}
                   src={VORTEX_DOCUMENTS_URL}
                   onLoading={this.onLoading}
                   ref={this.setRef}
@@ -119,13 +124,24 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
   private navigate = (url: string) => {
     if (this.mMounted) {
-      this.mWebView.stop();
+      try {
+        this.mWebView.stop();
+      } catch (err) {
+        log('warn', 'failed to navigate', { url, error: err.message });
+      }
     }
   }
 
   private renderWait() {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
         <Spinner
           style={{
             width: '64px',
