@@ -109,7 +109,6 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
             allowFullScreen
             onNewWindow={this.onNewWindow}
             onFullscreen={this.onFullscreen}
-            ref={this.setRef}
           />
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
