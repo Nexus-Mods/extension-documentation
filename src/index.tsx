@@ -34,12 +34,12 @@ function generateUrl(wikiId: string) {
 }
 
 export default function init(context: types.IExtensionContext) {
+  context.registerReducer(['session', 'tutorials'], sessionReducer);
+
   context.registerMainPage('details', 'Knowledge Base', DocumentationView, {
     hotkeyRaw: 'F1',
     group: 'global',
   } as any);
-
-  context.registerReducer(['session', 'tutorials'], sessionReducer);
 
   const tutData = getTutorialData();
 
