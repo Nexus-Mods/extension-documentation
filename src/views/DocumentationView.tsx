@@ -1,4 +1,3 @@
-import { WebviewTag } from 'electron';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
@@ -21,7 +20,7 @@ interface IProps {}
 
 class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private mRef: Webview = null;
-  private mWebView: WebviewTag;
+  private mWebView: any;
   private mCallbacks: { [event: string]: (...args: any[]) => void };
   private mMounted: boolean;
 
@@ -181,7 +180,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private setRef = ref => {
     this.mRef = ref;
     if (ref !== null) {
-      this.mWebView = ReactDOM.findDOMNode(this.mRef) as WebviewTag;
+      this.mWebView = ReactDOM.findDOMNode(this.mRef);
       Object.keys(this.mCallbacks).forEach(event => {
         this.mWebView.addEventListener(event, this.mCallbacks[event]);
       });

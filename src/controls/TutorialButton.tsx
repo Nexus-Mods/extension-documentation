@@ -228,7 +228,7 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
     onShow(video.id, false);
   }
 
-  private getBounds = (): ClientRect => {
+  private getBounds = (): DOMRect => {
     const { container } = this.props;
 
     return container !== undefined ? container.getBoundingClientRect() : {
@@ -238,7 +238,7 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
       height: window.innerHeight,
       right: window.innerWidth,
       bottom: window.innerHeight,
-    };
+    } as any;
   }
 }
 

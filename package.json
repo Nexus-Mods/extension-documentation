@@ -15,7 +15,9 @@
     "@types/react": "16.0.34",
     "@types/react-redux": "4.4.35",
     "copyfiles": "^2.1.1",
+    "ts-loader": "^7.0.3",
     "vortex-api": "Nexus-Mods/vortex-api",
-    "webpack": "^4.17.1"
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.3.10"
   }
 }
