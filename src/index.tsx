@@ -53,6 +53,7 @@ export default function init(context: types.IExtensionContext) {
         store.dispatch(setTutorialOpen(element.id,
           !util.getSafe(store.getState(),
           ['session', 'tutorials', 'currentTutorial', 'isOpen'], false)));
+        context.api.events.emit('analytics-track-click-event', 'Dashboard', 'Intro Video');
       }, undefined, (t) => (
         <TutorialButton video={element} />
       ), 5);
