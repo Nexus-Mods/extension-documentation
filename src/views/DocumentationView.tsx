@@ -125,6 +125,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     if (this.mMounted) {
       try {
         this.mWebView.stop();
+        this.mWebView.src = url;
       } catch (err) {
         log('warn', 'failed to navigate', { url, error: err.message });
       }
