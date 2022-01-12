@@ -1,4 +1,4 @@
-import { TranslationFunction } from 'i18next';
+import { TFunction } from 'i18next';
 import * as React from 'react';
 import { Popover } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
@@ -169,7 +169,7 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
     );
   }
 
-  private renderDropdownButton(t: TranslationFunction, name: string): JSX.Element {
+  private renderDropdownButton(t: TFunction, name: string): JSX.Element {
     const { container } = this.props;
     return (
       <a
@@ -182,7 +182,7 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
     );
   }
 
-  private renderButton(t: TranslationFunction, name: string): JSX.Element {
+  private renderButton(t: TFunction, name: string): JSX.Element {
     return (
       <div className='tutorial-link' ref={this.setRef}>
         <tooltip.IconButton tooltip={t(name)} onClick={this.show} icon='video'>
