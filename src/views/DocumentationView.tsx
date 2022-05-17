@@ -2,21 +2,32 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { ComponentEx, FlexLayout, log, MainPage,
-         Spinner, tooltip, util, Webview } from 'vortex-api';
+import { actions, ComponentEx, FlexLayout, log, MainPage,
+         Spinner, tooltip, types, util, Webview } from 'vortex-api';
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
-const VORTEX_DOCUMENTS_URL = 'https://wiki.nexusmods.com/index.php/Category:Vortex';
+const VORTEX_DOCUMENTS_URL = 'https://modding.wiki/en/vortex';
+const ALLOWED_DOMAINS = [
+  'https://nexus-mods.github.io',
+  'https://modding.wiki',
+];
 
+const LOGIN_URL = 'https://modding.wiki/login';
 interface IComponentState {
   loading: boolean;
   history: string[];
   historyIdx: number;
 }
 
-interface IProps {}
+interface IActionProps {
+  onShowDialog: (type: types.DialogType, title: string, content: types.IDialogContent,
+    actions: types.DialogActions) => void;
+}
+
+type IProps = IActionProps;
 
 class DocumentationView extends ComponentEx<IProps, IComponentState> {
   private mRef: Webview = null;
@@ -34,8 +45,20 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
     this.mCallbacks = {
       'did-finish-load': () => {
-        const newUrl: string = this.mWebView.getURL();
+        const newUrl: string = this.mWebView.getURL().toLowerCase();
+        if (newUrl === LOGIN_URL) {
+          this.navigate(this.state.history[this.state.historyIdx]);
+          util.opn(newUrl).catch(() => null);
+          return;
+        }
+        const isAllowed = ALLOWED_DOMAINS.findIndex(domain =>
+          newUrl.startsWith(domain)) !== -1;
+        if (!isAllowed) {
+          this.onExternalLink(newUrl);
+          return;
+        }
 
+        const contents = this.mWebView.webContents;
         if (newUrl !== this.nextState.history[this.nextState.historyIdx]) {
           this.nextState.history.splice(this.nextState.historyIdx + 1, 9999, newUrl);
           ++this.nextState.historyIdx;
@@ -117,6 +140,21 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     );
   }
 
+  private onExternalLink = (link: string) => {
+    const { onShowDialog } = this.props;
+    this.navigate(this.state.history[this.state.historyIdx]);
+    onShowDialog('question', 'External Link', {
+      text: 'For your safety the knowledge base browser is limited to the "Modding.wiki" domain. '
+          + 'A link you\'ve clicked lies outside this domain and can only be viewed in your regular '
+          + 'browser - please ensure you trust the URL below before allowing Vortex to open that page '
+          + 'in your default browser.',
+      message: link,
+    }, [
+      { label: 'Cancel' },
+      { label: 'Continue', action: () => util.opn(link).catch(() => null) },
+    ]);
+  }
+
   private onLoading = (loading: boolean) => {
     this.nextState.loading = loading;
   }
@@ -126,6 +164,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
       try {
         this.mWebView.stop();
         this.mWebView.src = url;
+        this.nextState.loading = false;
       } catch (err) {
         log('warn', 'failed to navigate', { url, error: err.message });
       }
@@ -202,5 +241,18 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
   }
 }
 
+function mapStateToProps(state: types.IState): any {
+  return {};
+}
+
+function mapDispatchToProps(dispatch: any): IActionProps {
+  return {
+    onShowDialog: (type, title, content, dialogActions) =>
+      dispatch(actions.showDialog(type, title, content, dialogActions)),
+  };
+}
+
 export default
-  withTranslation(['common'])(DocumentationView as any) as React.ComponentClass<{}>;
+  connect(mapStateToProps, mapDispatchToProps)(
+    withTranslation(['common'])(DocumentationView as any) as React.ComponentClass<IProps>);
+

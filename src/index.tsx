@@ -11,19 +11,19 @@ import DocumentationView from './views/DocumentationView';
 import { types, util } from 'vortex-api';
 
 const WIKI_TOPICS = {
-  'adding-games': 'Adding_a_new_game_to_Vortex',
-  'creating-themes': 'Creating_themes_for_Vortex',
-  'deployment-methods': 'Deployment_Methods',
-  'downloading': 'Downloading_from_Nexus_Mods_with_Vortex',
-  'external-changes': 'External_Changes',
-  'keyboard-shortcuts': 'Keyboard_Shortcuts',
-  'file-conflicts': 'Managing_File_Conflicts',
-  'load-order-about': 'About_Load_Orders',
-  'load-order': 'Managing_your_Load_Order',
-  'profiles': 'Setting_up_profiles_in_Vortex',
+  ['adding-games']: 'users/ui/games#finding-a-game',
+  ['creating-themes']: 'developer/creating-a-theme',
+  ['deployment-methods']: 'users/deployment-methods',
+  ['downloading']: 'users/download-from-nexusmods',
+  ['external-changes']: 'users/External-Changes',
+  ['keyboard-shortcuts']: 'users/keyboard-shortcuts',
+  ['file-conflicts']: 'users/managing-file-conflicts',
+  ['load-order-about']: 'users/vortex-approach-to-load-order',
+  ['load-order']: 'users/managing-your-load-order',
+  ['profiles']: 'users/setting-up-profiles',
 };
 
-const WIKI_URL = 'https://wiki.nexusmods.com/index.php';
+const WIKI_URL = 'https://modding.wiki/en/vortex';
 
 function generateUrl(wikiId: string) {
   const topicId = WIKI_TOPICS[wikiId] || undefined;
