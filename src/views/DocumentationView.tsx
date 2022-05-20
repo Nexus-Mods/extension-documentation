@@ -45,20 +45,19 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
 
     this.mCallbacks = {
       'did-finish-load': () => {
-        const newUrl: string = this.mWebView.getURL().toLowerCase();
-        if (newUrl === LOGIN_URL) {
+        const newUrl: string = this.mWebView.getURL();
+        if (newUrl.toLowerCase() === LOGIN_URL) {
           this.navigate(this.state.history[this.state.historyIdx]);
           util.opn(newUrl).catch(() => null);
           return;
         }
         const isAllowed = ALLOWED_DOMAINS.findIndex(domain =>
-          newUrl.startsWith(domain)) !== -1;
+          newUrl.toLowerCase().startsWith(domain)) !== -1;
         if (!isAllowed) {
           this.onExternalLink(newUrl);
           return;
         }
 
-        const contents = this.mWebView.webContents;
         if (newUrl !== this.nextState.history[this.nextState.historyIdx]) {
           this.nextState.history.splice(this.nextState.historyIdx + 1, 9999, newUrl);
           ++this.nextState.historyIdx;
