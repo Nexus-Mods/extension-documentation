@@ -9,10 +9,11 @@ import { actions, ComponentEx, FlexLayout, log, MainPage,
 import { ThemeToCSS } from '../ThemeToCSS';
 
 // Default documentation webview "landing".
-const VORTEX_DOCUMENTS_URL = 'https://modding.wiki/en/vortex';
+const VORTEX_DOCUMENTS_URL = 'https://github.com/Nexus-Mods/Vortex/wiki';
 const ALLOWED_DOMAINS = [
   'https://nexus-mods.github.io',
   'https://modding.wiki',
+  'https://github.com/nexus-mods/vortex/wiki',
 ];
 
 const LOGIN_URL = 'https://modding.wiki/login';
@@ -51,8 +52,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
           util.opn(newUrl).catch(() => null);
           return;
         }
-        const isAllowed = ALLOWED_DOMAINS.findIndex(domain =>
-          newUrl.toLowerCase().startsWith(domain)) !== -1;
+        const isAllowed = ALLOWED_DOMAINS.some(domain => newUrl.toLowerCase().startsWith(domain));
         if (!isAllowed) {
           this.onExternalLink(newUrl);
           return;
@@ -143,7 +143,7 @@ class DocumentationView extends ComponentEx<IProps, IComponentState> {
     const { onShowDialog } = this.props;
     this.navigate(this.state.history[this.state.historyIdx]);
     onShowDialog('question', 'External Link', {
-      text: 'For your safety the knowledge base browser is limited to the "Modding.wiki" domain. '
+      text: 'For your safety the knowledge base browser is limited to Vortex\'s GitHub wiki domain. '
           + 'A link you\'ve clicked lies outside this domain and can only be viewed in your regular '
           + 'browser - please ensure you trust the URL below before allowing Vortex to open that page '
           + 'in your default browser.',
