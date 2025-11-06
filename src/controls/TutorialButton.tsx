@@ -110,6 +110,7 @@ class TutorialButton extends ComponentEx<IProps, {}> {
               allowFullScreen: true,
             } as any}
           />
+          <p className='youtube-privacy-notice'>{t('Playing this video will store cookies on your device')}</p>
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
         </div>
