@@ -10,7 +10,7 @@ import { setTutorialOpen } from '../actions/session';
 import getEmbedLink from '../tutorialManager';
 import { IYoutubeInfo } from '../types/YoutubeInfo';
 
-import { ComponentEx, Icon, Overlay, tooltip, util, Webview } from 'vortex-api';
+import { ComponentEx, Icon, Overlay, tooltip, util } from 'vortex-api';
 
 export const VIDEO_WIDTH = 560;
 export const VIDEO_HEIGHT = 315;
@@ -53,20 +53,15 @@ type IProps = IBaseProps & IConnectedProps & IActionProps;
  * @param {IProps} props
  * @returns
  */
-class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
+class TutorialButton extends ComponentEx<IProps, {}> {
   private mRef: Element;
 
   constructor(props: IProps) {
     super(props);
-
-    this.initState({
-      fullscreen: false,
-    });
   }
 
   public render(): JSX.Element {
     const { dropdown, children, video, t, tutorialId, orientation, isOpen } = this.props;
-    const { fullscreen } = this.state;
 
     if (video === undefined) {
       return null;
@@ -98,17 +93,22 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
     const popover = (
       <Popover
         id={`popover-${video.group}-${video.id}`}
-        className={`tutorial-popover ${fullscreen ? 'tutorial-popover-fullscreen' : ''}`}
+        className='tutorial-popover'
         title={popOverTitle}
         onClick={this.stopClickEvent}
       >
         <div>
-          <Webview
-            style={{width: VIDEO_WIDTH, height: VIDEO_HEIGHT}}
-            src={getEmbedLink(video.ytId, video.start, video.end)}
-            allowFullScreen
-            onNewWindow={this.onNewWindow}
-            onFullscreen={this.onFullscreen}
+          <iframe
+            {...{
+              width: VIDEO_WIDTH,
+              height: VIDEO_HEIGHT,
+              src: getEmbedLink(video.ytId, video.start, video.end),
+              referrerPolicy: 'strict-origin-when-cross-origin',
+              allow: 'encrypted-media; web-share; fullscreen',
+              title: 'YouTube video player',
+              style: { border: 0 },
+              allowFullScreen: true,
+            } as any}
           />
           {children ? children.split('\n\n').map((paragraph) =>
             <p key={video.id}>{paragraph}</p>) : null}
@@ -149,14 +149,6 @@ class TutorialButton extends ComponentEx<IProps, { fullscreen: boolean }> {
         </div>
       );
     }
-  }
-
-  private onFullscreen = (fullscreen: boolean) => {
-    this.nextState.fullscreen = fullscreen;
-  }
-
-  private onNewWindow = (url: string) => {
-    util.opn(url).catch(() => null);
   }
 
   private stopClickEvent = (e) => {

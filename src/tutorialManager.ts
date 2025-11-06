@@ -1,7 +1,7 @@
 import IYoutubeInfo, { createTutorialVideo } from './types/YoutubeInfo';
 
 // Used when generating the embedding link to use within the tutorial popover window.
-const YOUTUBE_LINK = 'https://www.youtube.com/embed/';
+const YOUTUBE_LINK = 'https://www.youtube-nocookie.com/embed/';
 
 // Tutorial buttons which are assigned the todo group will registered as
 //  todo items on the dashboard.
@@ -93,7 +93,7 @@ function getEmbedLink(id: string, start: string | number, end: string | number):
     endSeconds = 0;
   }
 
-  return srcLink + id + '?start=' + startSeconds + '&end=' + endSeconds + ';autoplay=1';
+  return srcLink + id + '?start=' + startSeconds + '&end=' + endSeconds;
 }
 
 /**
