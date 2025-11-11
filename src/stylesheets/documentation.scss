@@ -34,6 +34,13 @@ $tut-video-height: 315;
 
 .tutorial-popover { max-width: 100%; }
 
+.tutorial-popover .youtube-privacy-notice {
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin: 8px 0;
+  text-align: center;
+}
+
 .tutorial-popover-fullscreen {
   position: absolute;
   top: 0 !important;
